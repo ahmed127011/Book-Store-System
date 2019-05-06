@@ -43,6 +43,8 @@ create table if not exists book
   publisher_name    varchar(45),
   constraint category_fk foreign key (category_name) references category (category_name),
   constraint publisher_fk foreign key (publisher_name) references publisher (publisher_name),
+  constraint check_quantity check (quantity >= 0),
+  constraint check_required_quantity check (required_quantity >= threshold),
   index isbn_index (ISBN),
   index title_index (title),
   index category_index (category_name)
@@ -93,3 +95,9 @@ create table if not exists user_orders
   index isbn_index (ISBN),
   index user_index (user_name)
 );
+
+set foreign_key_checks = 0;
+
+set foreign_key_checks = 1;
+
+set sql_safe_updates = 0;
