@@ -101,3 +101,32 @@ set foreign_key_checks = 0;
 set foreign_key_checks = 1;
 
 set sql_safe_updates = 0;
+
+delimiter $$
+
+create trigger place_library_order
+  after update
+  on book
+  for each row
+begin
+  if (NEW.quantity < NEW.threshold)
+  then
+    insert into library_orders (ISBN, quantity, ordered_date, confirmed)
+    values (NEW.ISBN, NEW.required_quantity, curdate(), 0);
+  end if;
+end $$
+
+create trigger confirm_library_order
+  after update
+  on library_orders
+  for each row
+begin
+  if (NEW.confirmed)
+  then
+    update book as b
+    set b.quantity = b.quantity + b.required_quantity
+    where b.ISBN = NEW.ISBN;
+  end if;
+end $$
+
+delimiter ;
