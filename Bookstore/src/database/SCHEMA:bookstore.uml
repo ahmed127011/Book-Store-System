@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>cbf59aea-51c7-4547-a955-1e0b9327d2cc.SCHEMA:bookstore</OriginalElement>
+  <nodes>
+    <node x="41.70187304181417" y="-51.016418446057784">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher</node>
+    <node x="504.61622658697746" y="102.30811329348865">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book</node>
+    <node x="867.7422704246721" y="123.77301964139798">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.user</node>
+    <node x="74.4047053790307" y="162.80264047813608">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher_addresses</node>
+    <node x="746.0460392827958" y="494.1139698270022">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.user_orders</node>
+    <node x="-183.13586108841264" y="166.72698035860202">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher_phones</node>
+    <node x="535.1162265869774" y="511.11944264235444">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.library_orders</node>
+    <node x="560.75" y="-74.56245772885372">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.category</node>
+    <node x="299.50000000000017" y="416.4243398804659">cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book_authors</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.user_orders" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.user">
+      <point x="49.75" y="-70.0" />
+      <point x="0.0" y="103.0" />
+    </edge>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book_authors" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book">
+      <point x="0.0" y="-36.5" />
+      <point x="406.00000000000006" y="354.0" />
+      <point x="540.5" y="354.0" />
+      <point x="-77.0" y="114.0" />
+    </edge>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.library_orders" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book">
+      <point x="0.0" y="-70.0" />
+      <point x="0.0" y="114.0" />
+    </edge>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher">
+      <point x="-57.75" y="-114.0" />
+      <point x="559.75" y="76.0" />
+      <point x="443.50000000000006" y="76.0" />
+      <point x="77.0" y="25.5" />
+    </edge>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.user_orders" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book">
+      <point x="-49.75" y="-70.0" />
+      <point x="772.25" y="354.0" />
+      <point x="694.5" y="354.0" />
+      <point x="77.0" y="114.0" />
+    </edge>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher_addresses" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher">
+      <point x="0.0" y="-36.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher_phones" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.publisher">
+      <point x="0.0" y="-36.5" />
+      <point x="14.775276401373048" y="83.84867976093196" />
+      <point x="23.95300142180173" y="65.53509365209072" />
+      <point x="-77.0" y="25.5" />
+    </edge>
+    <edge source="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.book" target="cbf59aea-51c7-4547-a955-1e0b9327d2cc.TABLE:bookstore.category">
+      <point x="57.75" y="-114.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7644597795754056" x="426.0710277688596" y="315.51012781383366" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+  </Categories>
+</Diagram>
+

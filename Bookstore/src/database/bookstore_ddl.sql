@@ -36,13 +36,13 @@ create table if not exists category
 
 create table if not exists book
 (
-  ISBN              integer primary key not null,
+  ISBN              varchar(15) primary key not null,
   title             varchar(45)         not null,
-  price             integer default 0,
+  price             int default 0,
   publication_date  date,
-  quantity          integer default 0,
-  threshold         integer default 0,
-  required_quantity integer default 0,
+  quantity          int default 0,
+  threshold         int default 0,
+  required_quantity int default 0,
   category_name     varchar(30),
   publisher_name    varchar(45),
 
@@ -58,7 +58,7 @@ create table if not exists book
 
 create table if not exists book_authors
 (
-  ISBN        integer     not null,
+  ISBN        varchar(15)     not null,
   author_name varchar(45) not null,
 
   primary key (ISBN, author_name),
@@ -69,8 +69,8 @@ create table if not exists book_authors
 create table if not exists library_orders
 (
   order_id     integer primary key auto_increment not null,
-  ISBN         integer,
-  quantity     integer default 0,
+  ISBN         varchar(15),
+  quantity     int default 0,
   ordered_date date,
   confirmed    bit     default 0,
 
@@ -96,10 +96,10 @@ create table if not exists user
 
 create table if not exists user_orders
 (
-  ISBN           integer     not null,
+  ISBN           varchar(15)     not null,
   user_name      varchar(30) not null,
   email          varchar(45) not null,
-  quantity       integer default 0,
+  quantity       int default 0,
   check_out_date date,
 
   primary key (ISBN, user_name, email),
@@ -125,7 +125,7 @@ create trigger place_library_order
   on book
   for each row
 begin
-  if (NEW.quantity < NEW.threshold)
+  if (NEW.quantity < NEW.threshold and OLD.quantity >= OLD.threshold)
   then
     insert into library_orders (ISBN, quantity, ordered_date, confirmed)
     values (NEW.ISBN, NEW.required_quantity, curdate(), 0);
@@ -146,3 +146,18 @@ begin
 end $$
 
 delimiter ;
+
+insert into category (category_name)
+values ('Science');
+
+insert into category (category_name)
+values ('Art');
+
+insert into category (category_name)
+values ('Religion');
+
+insert into category (category_name)
+values ('History');
+
+insert into category (category_name)
+values ('Geography');
