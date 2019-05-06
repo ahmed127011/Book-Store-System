@@ -1,6 +1,8 @@
 package models;
 
 
+import java.io.Serializable;
+
 public class Book {
 
     private String isbn;
@@ -99,6 +101,12 @@ public class Book {
 
     public void setPublisherName(String publisherName) {
         this.publisherName = publisherName;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Book book = (Book) object;
+        return book.isbn.equals(this.isbn);
     }
 
 }

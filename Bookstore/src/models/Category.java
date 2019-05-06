@@ -22,4 +22,10 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        Category category = (Category) object;
+        return category.categoryName.equals(this.categoryName);
+    }
+
 }
