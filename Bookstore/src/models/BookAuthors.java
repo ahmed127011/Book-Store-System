@@ -1,9 +1,18 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+//TODO add key
+
+@Entity
+@Table (name = "book_authors")
 public class BookAuthors {
 
+    @Column(name = "ISBN")
     private String isbn;
+    @Column(name = "author_name")
     private String authorName;
 
     public BookAuthors() {

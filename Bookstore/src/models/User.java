@@ -1,15 +1,24 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table (name = "user")
 public class User {
 
+    @Column(name = "user_name")
     private String userName;
     private String email;
     private String password;
     private String phone;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last name")
     private String lastName;
     private String address;
+    @Column(name = "is_manager")
     private String isManger;
 
     public User() {

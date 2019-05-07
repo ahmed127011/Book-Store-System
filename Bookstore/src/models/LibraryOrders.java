@@ -1,11 +1,20 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "library_orders")
 public class LibraryOrders {
-
+    @Id
+    @Column(name = "order_id")
     private long orderId;
+    @Column(name = "ISBN")
     private String isbn;
     private long quantity;
+    @Column(name = "ordered_date")
     private java.sql.Date orderedDate;
     private String confirmed;
 
