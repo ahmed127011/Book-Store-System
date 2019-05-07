@@ -1,6 +1,9 @@
 package models;
 
 
+import controllers.ShoppingCart;
+import org.hibernate.Session;
+
 public class User {
 
     private String userName;
@@ -11,6 +14,7 @@ public class User {
     private String lastName;
     private String address;
     private String isManger;
+    private ShoppingCart shoppingCart;
 
     public User() {
     }
@@ -20,6 +24,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.phone = phone;
+        this.shoppingCart = new ShoppingCart();
     }
 
     public String getUserName() {
@@ -91,6 +96,19 @@ public class User {
 
     public void setIsManger(String isManger) {
         this.isManger = isManger;
+    }
+
+    public void addOrder(UserOrders order) {
+        this.shoppingCart.addOrder(order);
+    }
+
+    public void removeOrder(UserOrders order) {
+        this.shoppingCart.removeOrder(order);
+    }
+
+    public void checkout() {
+        // TODO Send Session from SessionFactory to checkout function
+//        this.shoppingCart.checkout(session);
     }
 
     @Override

@@ -5,6 +5,9 @@ import models.UserOrders;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Session;
+
+
 /**
  * Created by khaledabdelfattah on 5/7/19.
  */
@@ -15,22 +18,22 @@ public class ShoppingCart {
         cart = new ArrayList<>();
     }
 
-    public void addBook(UserOrders order) {
+    public void addOrder(UserOrders order) {
         cart.add(order);
     }
 
-    public void removeBook(UserOrders order) {
+    public void removeOrder(UserOrders order) {
         cart.remove(order);
     }
 
-    public List<UserOrders> getBooks() {
+    public List<UserOrders> getOrders() {
         return this.cart;
     }
 
     /**
      * Takes session and insert user orders into user_orders table.
      */
-    public void checkout() {
+    public void checkout(Session session) {
         // TODO Insert books into UserOrders Table
     }
 }
