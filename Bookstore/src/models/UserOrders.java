@@ -70,4 +70,11 @@ public class UserOrders {
         this.checkOutDate = checkOutDate;
     }
 
+    @Override
+    public boolean equals(Object object) {
+        UserOrders order = (UserOrders) object;
+        return order.isbn.equals(this.isbn) &&
+                order.userName.equals(this.userName) &&
+                order.email.equals(this.email);
+    }
 }
