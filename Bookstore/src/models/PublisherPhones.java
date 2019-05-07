@@ -1,8 +1,14 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "publisher_phones")
 public class PublisherPhones {
 
+    @Column(name = "publisher_name")
     private String publisherName;
     private String phone;
 

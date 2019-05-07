@@ -1,12 +1,19 @@
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "user_orders")
 public class UserOrders {
-
+    @Column(name = "ISBN")
     private String isbn;
+    @Column(name = "user_name")
     private String userName;
     private String email;
     private long quantity;
+    @Column(name = "check_out_date")
     private java.sql.Date checkOutDate;
 
     public UserOrders() {

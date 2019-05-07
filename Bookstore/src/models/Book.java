@@ -1,18 +1,29 @@
 package models;
 
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "book")
 public class Book {
-
+    @Id
+    @Column(name = "ISBN")
     private String isbn;
     private String title;
     private long price;
+    @Column(name = "publication_date")
     private java.sql.Date publicationDate;
     private long quantity;
     private long threshold;
+    @Column(name = "required_quantity")
     private long requiredQuantity;
+    @Column(name = "category_name")
     private String categoryName;
+    @Column(name = "publisher_name")
     private String publisherName;
 
     public Book() {
