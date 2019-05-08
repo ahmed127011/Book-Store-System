@@ -37,7 +37,7 @@ create table if not exists category
 create table if not exists book
 (
   ISBN              varchar(15) primary key not null,
-  title             varchar(45)         not null,
+  title             varchar(45)             not null,
   price             int default 0,
   publication_date  date,
   quantity          int default 0,
@@ -58,7 +58,7 @@ create table if not exists book
 
 create table if not exists book_authors
 (
-  ISBN        varchar(15)     not null,
+  ISBN        varchar(15) not null,
   author_name varchar(45) not null,
 
   primary key (ISBN, author_name),
@@ -72,7 +72,7 @@ create table if not exists library_orders
   ISBN         varchar(15),
   quantity     int default 0,
   ordered_date date,
-  confirmed    bit     default 0,
+  confirmed    bit default 0,
 
   constraint book_order_fk
     foreign key (ISBN) references book (ISBN) on update cascade on delete cascade,
@@ -96,7 +96,7 @@ create table if not exists user
 
 create table if not exists user_orders
 (
-  ISBN           varchar(15)     not null,
+  ISBN           varchar(15) not null,
   user_name      varchar(30) not null,
   email          varchar(45) not null,
   quantity       int default 0,
@@ -117,6 +117,8 @@ set foreign_key_checks = 0;
 set foreign_key_checks = 1;
 
 set sql_safe_updates = 0;
+
+set global event_scheduler = on;
 
 delimiter $$
 
@@ -144,6 +146,24 @@ begin
     where b.ISBN = NEW.ISBN;
   end if;
 end $$
+
+create trigger confirm_user_order
+  before insert
+  on user_orders
+  for each row
+begin
+  update book
+  set book.quantity = book.quantity - NEW.quantity
+  where book.ISBN = NEW.ISBN;
+end $$
+
+create event delete_old_orders
+  on schedule every 1 day
+  do
+  delete
+  from user_orders
+  where check_out_date < date_sub(now(), interval 3 month)
+$$
 
 delimiter ;
 
