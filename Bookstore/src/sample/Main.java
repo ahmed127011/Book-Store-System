@@ -12,11 +12,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        File file = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/sample.fxml");
+        File file = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/loginClk.fxml");
         Parent root = FXMLLoader.load(file.toURI().toURL());
 //        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("/sample.fxml"));
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 
