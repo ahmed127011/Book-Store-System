@@ -1,43 +1,48 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 //TODO add key
 
 @Entity
-@Table (name = "book_authors")
+@Table(name = "book_authors")
 public class BookAuthors {
-
-    @Column(name = "ISBN")
-    private String isbn;
-    @Column(name = "author_name")
-    private String authorName;
+    @EmbeddedId
+    AuthorsPK pk;
 
     public BookAuthors() {
     }
 
     public BookAuthors(String isbn, String authorName) {
-        this.isbn = isbn;
-        this.authorName = authorName;
+        pk=new AuthorsPK();
+        this.pk.isbn = isbn;
+        this.pk.authorName = authorName;
     }
 
     public String getIsbn() {
-        return isbn;
+        return pk.isbn;
     }
 
     public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        this.pk.isbn = isbn;
     }
 
 
     public String getAuthorName() {
-        return authorName;
+        return pk.authorName;
     }
 
     public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+        this.pk.authorName = authorName;
     }
 
+}
+
+@Embeddable
+class AuthorsPK implements Serializable {
+    @Column(name = "ISBN")
+    String isbn;
+    @Column(name = "author_name")
+    String authorName;
 }

@@ -1,40 +1,43 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "publisher_phones")
 public class PublisherPhones {
-
-    @Column(name = "publisher_name")
-    private String publisherName;
-    private String phone;
+    @EmbeddedId
+    PhonePK pk;
 
     public PublisherPhones() {
     }
 
     public PublisherPhones(String publisherName, String phone) {
-        this.publisherName = publisherName;
-        this.phone = phone;
+        this.pk.publisherName = publisherName;
+        this.pk.phone = phone;
     }
 
     public String getPublisherName() {
-        return publisherName;
+        return pk.publisherName;
     }
 
     public void setPublisherName(String publisherName) {
-        this.publisherName = publisherName;
+        this.pk.publisherName = publisherName;
     }
 
 
     public String getPhone() {
-        return phone;
+        return pk.phone;
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        this.pk.phone = phone;
     }
 
+}
+@Embeddable
+ class PhonePK implements Serializable{
+    @Column(name = "publisher_name")
+     String publisherName;
+     String phone;
 }

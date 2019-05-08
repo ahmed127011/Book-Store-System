@@ -1,17 +1,14 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "user_orders")
 public class UserOrders {
-    @Column(name = "ISBN")
-    private String isbn;
-    @Column(name = "user_name")
-    private String userName;
-    private String email;
+
+    @EmbeddedId
+    private OrderPK pk;
     private long quantity;
     @Column(name = "check_out_date")
     private java.sql.Date checkOutDate;
@@ -20,36 +17,37 @@ public class UserOrders {
     }
 
     public UserOrders(String isbn, String userName, String email, long quantity) {
-        this.isbn = isbn;
-        this.userName = userName;
-        this.email = email;
+        this.pk=new OrderPK();
+        this.pk.isbn = isbn;
+        this.pk.userName = userName;
+        this.pk.email = email;
         this.quantity = quantity;
     }
 
     public String getIsbn() {
-        return isbn;
+        return pk.isbn;
     }
 
     public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        this.pk.isbn = isbn;
     }
 
 
     public String getUserName() {
-        return userName;
+        return pk.userName;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.pk.userName = userName;
     }
 
 
     public String getEmail() {
-        return email;
+        return pk.email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.pk.email = email;
     }
 
 
@@ -73,8 +71,19 @@ public class UserOrders {
     @Override
     public boolean equals(Object object) {
         UserOrders order = (UserOrders) object;
-        return order.isbn.equals(this.isbn) &&
-                order.userName.equals(this.userName) &&
-                order.email.equals(this.email);
+        return order.pk.isbn.equals(this.pk.isbn) &&
+                order.pk.userName.equals(this.pk.userName) &&
+                order.pk.email.equals(this.pk.email);
     }
+}
+
+@Embeddable
+ class OrderPK implements Serializable {
+    @Column(name = "ISBN")
+    String isbn;
+
+    @Column(name = "user_name")
+    String userName;
+    String email;
+
 }

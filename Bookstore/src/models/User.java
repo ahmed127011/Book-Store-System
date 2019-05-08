@@ -1,18 +1,16 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import controllers.ShoppingCart;
+
+import java.io.Serializable;
 
 @Entity
 @Table(name = "user")
 public class User {
-
-    @Column(name = "user_name")
-    private String userName;
-    private String email;
+    @EmbeddedId
+    private UserPK pk;
     private String password;
     private String phone;
     @Column(name = "first_name")
@@ -23,34 +21,33 @@ public class User {
     @Column(name = "is_manager")
     private String isManger;
 
-    private ShoppingCart shoppingCart;
 
     public User() {
     }
 
     public User(String userName, String email, String password, String phone) {
-        this.userName = userName;
-        this.email = email;
+        this.pk=new UserPK();
+        this.pk.userName = userName;
+        this.pk.email = email;
         this.password = password;
         this.phone = phone;
-        this.shoppingCart = new ShoppingCart();
     }
 
     public String getUserName() {
-        return userName;
+        return pk.userName;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.pk.userName = userName;
     }
 
 
     public String getEmail() {
-        return email;
+        return pk.email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.pk.email = email;
     }
 
 
@@ -107,13 +104,6 @@ public class User {
         this.isManger = isManger;
     }
 
-    public void addOrder(UserOrders order) {
-        this.shoppingCart.addOrder(order);
-    }
-
-    public void removeOrder(UserOrders order) {
-        this.shoppingCart.removeOrder(order);
-    }
 
     public void checkout() {
         // TODO Send Session from SessionFactory to checkout function
@@ -123,9 +113,16 @@ public class User {
     @Override
     public boolean equals(Object object) {
         User user = (User) object;
-        return user.userName.equals(this.userName) &&
-                user.email.equals(this.email) &&
+        return user.pk.userName.equals(this.pk.userName) &&
+                user.pk.email.equals(this.pk.email) &&
                 user.password.equals(this.password);
     }
 
+}
+
+@Embeddable
+class UserPK implements Serializable {
+    @Column(name = "user_name")
+    String userName;
+    String email;
 }
