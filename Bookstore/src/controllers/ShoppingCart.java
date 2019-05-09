@@ -30,10 +30,5 @@ public class ShoppingCart {
         return this.cart;
     }
 
-    /**
-     * Takes session and insert user orders into user_orders table.
-     */
-    public void checkout(Session session) {
-        // TODO Insert books into UserOrders Table
-    }
+
 }

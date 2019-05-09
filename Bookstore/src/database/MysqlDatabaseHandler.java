@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.Database;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -14,8 +15,8 @@ import java.util.List;
 
 public class MysqlDatabaseHandler implements DatabaseHandler {
     private SessionFactory factory;
-
-    public MysqlDatabaseHandler() {
+    private static MysqlDatabaseHandler instance;
+    private MysqlDatabaseHandler() {
         // create session factory
         factory = new Configuration()
                 .configure("hibernate.cfg.xml")
@@ -32,7 +33,11 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
         // create session
     }
-
+    public static DatabaseHandler getInstance(){
+        if(instance==null)
+            instance=new MysqlDatabaseHandler();
+        return instance;
+    }
     @Override
     public boolean signUp(User user) {
         Session session = factory.getCurrentSession();
@@ -73,6 +78,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public void logout() {
+
 
     }
 
@@ -210,6 +216,34 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
                 query.append(" and ");
             query.append(" b.price <= ");
             query.append(bookData.getUpperPrice());
+            flag=true;
+        }
+        if(bookData.getPublisher()!=null) {
+            if(flag)
+                query.append(" and ");
+            query.append("b.publisherName = '");
+            query.append(bookData.getPublisher());
+            query.append("'");
+            flag=true;
+
+        }
+        if(bookData.getCategories()!=null)
+        {
+            if(flag)
+                query.append(" and ");
+            query.append("b.categoryName in (");
+            int i=0;
+            for(String category:bookData.getCategories())
+            {
+                query.append(" '");
+                query.append(category);
+                query.append("' ");
+                if(i!=bookData.getCategories().size()-1){
+                    query.append(",");
+                }
+                i++;
+            }
+            query.append(")");
         }
 
         System.out.println(query.toString());
@@ -271,7 +305,20 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public boolean Checkout(User user, String creditCard, Date expireDate) {
-        return false;
+    public boolean Checkout() {
+        ShoppingCart cart=LoggedUser.getInstance().getCart();
+        Session session =factory.getCurrentSession();
+        session.beginTransaction();
+        for(UserOrders order:cart.getOrders())
+        {
+            session.save(order);
+        }
+        try {
+            session.getTransaction().commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
