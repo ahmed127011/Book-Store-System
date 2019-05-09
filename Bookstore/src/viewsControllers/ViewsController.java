@@ -4,11 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import sample.Main;
-
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ViewsController {
@@ -29,6 +26,9 @@ public class ViewsController {
     private Stage primaryStage;
     private Scene loginScreenScene;
     private Scene signUpScreenScene;
+    private Scene controlPanelScene;
+
+
 
     private ViewsController() throws IOException {
         File loginScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/login.fxml");
@@ -36,10 +36,15 @@ public class ViewsController {
         Parent loginScreenParent = FXMLLoader.load(loginScreenUrl);
         loginScreenScene = new Scene(loginScreenParent);
 
-        File SignUpScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/signUp.fxml");
-        URL SignUpScreenUrl = SignUpScreenFile.toURI().toURL();
-        Parent signUpScreenParent = FXMLLoader.load(SignUpScreenUrl);
+        File signUpScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/signUp.fxml");
+        URL signUpScreenUrl = signUpScreenFile.toURI().toURL();
+        Parent signUpScreenParent = FXMLLoader.load(signUpScreenUrl);
         signUpScreenScene = new Scene(signUpScreenParent);
+
+        File controlPanelScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/controlPanel.fxml");
+        URL controlPanelScreenUrl = controlPanelScreenFile.toURI().toURL();
+        Parent controlPanelScreenParent = FXMLLoader.load(controlPanelScreenUrl);
+        controlPanelScene = new Scene(controlPanelScreenParent);
     }
 
     public void openLoginScreen() {
@@ -50,7 +55,12 @@ public class ViewsController {
         primaryStage.setScene(signUpScreenScene);
     }
 
+    public void openControlPanelScreen() {
+        primaryStage.setScene(controlPanelScene);
+    }
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
 }

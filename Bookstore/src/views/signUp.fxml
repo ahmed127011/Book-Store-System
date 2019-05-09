@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="497.0" prefWidth="368.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewsControllers.SignUp">
+<AnchorPane prefHeight="515.0" prefWidth="368.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewsControllers.SignUp">
    <children>
       <Label layoutX="103.0" layoutY="14.0" text="Sign Up">
          <font>
@@ -21,19 +21,22 @@
       <PasswordField fx:id="passwordTxtField" layoutX="173.0" layoutY="161.0" />
 
       <Label layoutX="42.0" layoutY="220.0" text="Email" />
-      <TextField fx:id="emailTxtField1" layoutX="173.0" layoutY="211.0" />
+      <TextField fx:id="emailTxtField" layoutX="173.0" layoutY="211.0" />
 
       <Label layoutX="42.0" layoutY="270.0" text="First Name" />
-      <TextField fx:id="firstNameTxtField1" layoutX="173.0" layoutY="261.0" />
+      <TextField fx:id="firstNameTxtField" layoutX="173.0" layoutY="261.0" />
 
       <Label layoutX="42.0" layoutY="320.0" text="Last Name" />
-      <TextField fx:id="lastNameTxtField1" layoutX="173.0" layoutY="311.0" />
+      <TextField fx:id="lastNameTxtField" layoutX="173.0" layoutY="311.0" />
 
       <Label layoutX="42.0" layoutY="370.0" text="Shipping Address" />
-      <TextField fx:id="addressTxtField1" layoutX="173.0" layoutY="361.0" />
+      <TextField fx:id="addressTxtField" layoutX="173.0" layoutY="361.0" />
+
+      <Label layoutX="42.0" layoutY="420.0" text="Phone" />
+      <TextField fx:id="phoneTxtField" layoutX="173.0" layoutY="411.0" />
 
 
-      <Button layoutX="260.0" layoutY="441.0" mnemonicParsing="false" onAction="#SignUpClk" text="Sign Up" />
-      <Button layoutX="45.0" layoutY="441.0" mnemonicParsing="false" onAction="#backClk" text="Back" />
+      <Button layoutX="260.0" layoutY="464.0" mnemonicParsing="false" onAction="#SignUpClk" text="Sign Up" />
+      <Button layoutX="45.0" layoutY="464.0" mnemonicParsing="false" onAction="#backClk" text="Back" />
    </children>
 </AnchorPane>
