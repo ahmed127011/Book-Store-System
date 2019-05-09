@@ -4,13 +4,12 @@ package viewsControllers;
 import database.DatabaseHandler;
 import database.MysqlDatabaseHandler;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.DialogEvent;
 import javafx.scene.control.TextField;
+import models.LoggedUser;
 import models.User;
 
 
@@ -36,7 +35,21 @@ public class SignUp implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ViewsController.getInstance().setSignUpController(this);
+    }
 
+    public void onSceneShow() {
+        if(LoggedUser.getInstance().getUser() == null) { // Not logged in : Sign Up
+            //userNameTxtField.setText("");
+            passwordTxtField.setText("");
+            emailTxtField.setText("");
+            firstNameTxtField.setText("");
+            lastNameTxtField.setText("");
+            addressTxtField.setText("");
+            phoneTxtField.setText("");
+        } else { // Logged in : Edit Profile
+
+        }
     }
 
     public void SignUpClk(ActionEvent actionEvent) {
@@ -57,12 +70,8 @@ public class SignUp implements Initializable {
         Boolean signedUp = databaseHandler.signUp(user);
         if(signedUp) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Signed Up");
-            alert.setOnCloseRequest(new EventHandler<DialogEvent>() {
-                @Override
-                public void handle(DialogEvent dialogEvent) {
-                    ViewsController.getInstance().openLoginScreen();
-                }
-            });
+            alert.setHeaderText(null);
+            alert.setOnCloseRequest(dialogEvent -> ViewsController.getInstance().openLoginScreen());
             alert.show();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Wrong SignUp Information");

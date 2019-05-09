@@ -39,7 +39,7 @@ public class Login implements Initializable {
                 @Override
                 public void handle(DialogEvent dialogEvent) {
                     if(LoggedUser.getInstance().getUser().getIsManger()) {
-                        // Todo : go to manager Home page
+                        ViewsController.getInstance().openControlPanelScreen();
                     } else  {
                         // Todo : go to user Home page
                     }
