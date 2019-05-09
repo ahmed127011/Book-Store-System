@@ -49,8 +49,20 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public boolean login(User user, String password) {
-        return false;
+    public boolean login(String username,String password) {
+        Session session=factory.getCurrentSession();
+        String query = "From User u where u.pk.userName= '" + username +"'";
+        session.beginTransaction();
+       try {
+           User user = (User) session.createQuery(query).getResultList().get(0);
+           session.getTransaction().commit();
+           return user.getPassword().equals(password);
+       }catch (Exception e)
+       {
+           e.printStackTrace();
+           return false;
+       }
+
     }
 
     @Override
@@ -60,7 +72,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean addNewBook(Book book, User user) {
-        if (user.getIsManger().equals("false"))
+        if (!user.getIsManger())
             return false;
         Session session = factory.getCurrentSession();
 
@@ -107,7 +119,22 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public boolean promoteUser(User user) {
+    public boolean promoteUser(User user,User manager) {
+        Session session=factory.getCurrentSession();
+        if(manager.getIsManger())
+        {
+            String query = "From User u where u.pk.userName= '" + user.getUserName() +"' and u.pk.email='"+user.getEmail()+"'" ;
+            System.out.println(query);
+            session.beginTransaction();
+            User oldUser = (User)session.createQuery(query).getResultList().get(0);
+            session.getTransaction().commit();
+            oldUser.setIsManger(true);
+            session=factory.getCurrentSession();
+            session.beginTransaction();
+            session.update(oldUser);
+            session.getTransaction().commit();
+            return true;
+        }
         return false;
     }
 

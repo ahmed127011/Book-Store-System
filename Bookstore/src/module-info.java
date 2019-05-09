@@ -7,4 +7,5 @@ module Bookstore {
     requires java.naming;
 
     opens sample;
+    opens viewsControllers;
 }
