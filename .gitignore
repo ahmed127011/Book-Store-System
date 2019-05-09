@@ -91,3 +91,5 @@ fabric.properties
 
 .idea/
 *.iml
+
+Bookstore/src/hibernate.cfg.xml
