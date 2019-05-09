@@ -28,9 +28,7 @@ public class Login implements Initializable {
     }
 
     public void SignUpClk(ActionEvent actionEvent) throws IOException {
-        File file = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/signUp.fxml");
-        Parent root = FXMLLoader.load(file.toURI().toURL());
-        Main.primaryStage.setScene(new Scene(root));
+        ViewsController.getInstance().openSignUpScreen();
     }
 
     @Override
