@@ -15,11 +15,11 @@ public class User {
     private String phone;
     @Column(name = "first_name")
     private String firstName;
-    @Column(name = "last name")
+    @Column(name = "last_name")
     private String lastName;
     private String address;
-    @Column(name = "is_manager")
-    private String isManger;
+    @Column(name = "is_manger")
+    private boolean isManger;
 
 
     public User() {
@@ -31,6 +31,7 @@ public class User {
         this.pk.email = email;
         this.password = password;
         this.phone = phone;
+        this.isManger=false;
     }
 
     public String getUserName() {
@@ -96,11 +97,11 @@ public class User {
     }
 
 
-    public String getIsManger() {
+    public boolean getIsManger() {
         return isManger;
     }
 
-    public void setIsManger(String isManger) {
+    public void setIsManger(boolean isManger) {
         this.isManger = isManger;
     }
 
