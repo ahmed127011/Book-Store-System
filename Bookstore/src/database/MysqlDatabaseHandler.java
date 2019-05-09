@@ -2,15 +2,11 @@ package database;
 
 import controllers.ShoppingCart;
 import models.*;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.Database;
+import sun.rmi.runtime.Log;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MysqlDatabaseHandler implements DatabaseHandler {
@@ -78,8 +74,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public void logout() {
-
-
+        LoggedUser.getInstance().logOut();
     }
 
     @Override
@@ -135,13 +130,34 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public int orderFromSupplier(Book book, int quantity) {
-        return 0;
+    public boolean orderFromSupplier(String isbn, int quantity) {
+        if(!LoggedUser.getInstance().getUser().getIsManger())
+            return false;
+        Session session=factory.getCurrentSession();
+        session.beginTransaction();
+        LibraryOrders order=new LibraryOrders(isbn,quantity);
+        session.save(order);
+        session.getTransaction().commit();
+        return true;
     }
 
     @Override
-    public boolean confirmOrder(UserOrders order) {
-        return false;
+    public boolean confirmOrder(LibraryOrders order) {
+        User user=LoggedUser.getInstance().getUser();
+        if (!user.getIsManger())
+            return false;
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        order.setConfirmed(true);
+
+        session.update(order);
+        try {
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -262,45 +278,30 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public boolean addToShoppingCard(User user, Book book, int quantity) {
-        Session session = factory.getCurrentSession();
-
-        UserOrders order = new UserOrders(book.getIsbn(), user.getUserName(), user.getEmail(), quantity);
-        session.beginTransaction();
-        session.save(order);
-        try {
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    public void addToShoppingCard(String isbn, int quantity) {
+        User user=LoggedUser.getInstance().getUser();
+        UserOrders order=new UserOrders(isbn,user.getUserName(),user.getEmail(),quantity);
+        ShoppingCart cart=LoggedUser.getInstance().getCart();
+        cart.addOrder(order);
     }
 
     @Override
-    public List<Book> ShowShoppingCardInfo(User user) {
-        Session session = factory.getCurrentSession();
+    public List<UserOrders> ShowShoppingCardInfo() {
+        ShoppingCart cart=LoggedUser.getInstance().getCart();
+        return cart.getOrders();
 
-        String query = "From UserOrders u where u.pk.userName= '" + user.getUserName() + "' and u.pk.email='" + user.getEmail() + "'";
-        session.beginTransaction();
-        List<?> orders = session.createQuery(query).getResultList();
-        List<Book> books = new ArrayList<>();
-        session.getTransaction().commit();
-        for (Object o : orders) {
-            session = factory.getCurrentSession();
-
-            session.beginTransaction();
-            Book b = session.get(Book.class, ((UserOrders) o).getIsbn());
-            b.setQuantity(((UserOrders) o).getQuantity());
-            books.add(b);
-            session.getTransaction().commit();
-        }
-
-        return books;
     }
 
     @Override
-    public boolean removeShoppingCard(User user) {
+    public boolean removeFromShoppingCard(String isbn) {
+        ShoppingCart cart=LoggedUser.getInstance().getCart();
+        for(UserOrders order:cart.getOrders())
+        {
+            if(order.getIsbn().equals(isbn)){
+                cart.getOrders().remove(order);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -321,4 +322,21 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         }
         return true;
     }
+    @Override
+    public List<LibraryOrders> getOrders(){
+        Session session=factory.getCurrentSession();
+        String query = "From LibraryOrders l";
+        session.beginTransaction();
+        try {
+            List<?> orders = session.createQuery(query).getResultList();
+            session.getTransaction().commit();
+            return (List<LibraryOrders>) orders;
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 }

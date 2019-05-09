@@ -1,14 +1,13 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "library_orders")
 public class LibraryOrders {
+
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "order_id")
     private long orderId;
     @Column(name = "ISBN")
@@ -16,7 +15,7 @@ public class LibraryOrders {
     private long quantity;
     @Column(name = "ordered_date")
     private java.sql.Date orderedDate;
-    private String confirmed;
+    private boolean confirmed;
 
     public LibraryOrders() {
     }
@@ -62,11 +61,11 @@ public class LibraryOrders {
     }
 
 
-    public String getConfirmed() {
+    public boolean getConfirmed() {
         return confirmed;
     }
 
-    public void setConfirmed(String confirmed) {
+    public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
     }
 

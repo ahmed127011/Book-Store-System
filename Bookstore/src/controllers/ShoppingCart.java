@@ -19,6 +19,17 @@ public class ShoppingCart {
     }
 
     public void addOrder(UserOrders order) {
+        for(UserOrders oldOrder:cart){
+            if(oldOrder.equals(order)){
+                oldOrder.setQuantity(oldOrder.getQuantity()+order.getQuantity());
+                return;
+            }
+        }
+        cart.add(order);
+
+
+
+
         cart.add(order);
     }
 
