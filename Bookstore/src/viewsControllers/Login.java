@@ -29,7 +29,7 @@ public class Login implements Initializable {
     private TextField passwordTxtField;
 
     public void loginClk(ActionEvent actionEvent) {
-        DatabaseHandler databaseHandler = new MysqlDatabaseHandler();
+        DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         String username = userNameTxtField.getText();
         String password = passwordTxtField.getText();
         Boolean loggedin = databaseHandler.login(username,password);

@@ -35,7 +35,7 @@ public class SignUp implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ViewsController.getInstance().setSignUpController(this);
+
     }
 
     public void onSceneShow() {
@@ -53,7 +53,7 @@ public class SignUp implements Initializable {
     }
 
     public void SignUpClk(ActionEvent actionEvent) {
-        DatabaseHandler databaseHandler = new MysqlDatabaseHandler();
+        DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         String username = userNameTxtField.getText();
         String password = passwordTxtField.getText();
         String email = emailTxtField.getText();

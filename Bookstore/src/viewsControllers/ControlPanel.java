@@ -47,7 +47,7 @@ public class ControlPanel implements Initializable {
         // Get The user name
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()){
-            DatabaseHandler databaseHandler = new MysqlDatabaseHandler();
+            DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
             if(databaseHandler.promoteUser(result.get())) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully promoted "+ result.get());
                 alert.setHeaderText(null);
