@@ -169,6 +169,14 @@ create event delete_old_orders
   where check_out_date < date_sub(now(), interval 3 month);
 $$
 
+create event delete_old_library_orders
+  on schedule every 1 day
+  do
+  delete
+  from library_orders
+  where ordered_date < date_sub(now(), interval 3 month);
+$$
+
 create procedure get_total_sales()
 begin
   select sum(book.price * user_orders.quantity) as total_sales
@@ -177,6 +185,27 @@ begin
   where user_orders.check_out_date < date_sub(now(), interval 1 month);
 end $$
 
+create procedure get_top_users()
+begin
+  select sales.user_name
+  from (select user_orders.user_name, sum(book.price * user_orders.quantity) as sale
+        from user_orders
+               natural join book
+        group by user_orders.user_name
+        order by sale desc) as sales
+  limit 5;
+end $$
+
+create procedure get_top_books()
+begin
+  select books.title
+    from (select book.title, sum(user_orders.quantity) as book_count
+      from book
+      natural join user_orders
+      group by ISBN
+      order by book_count desc) as books
+    limit 10;
+end $$
 
 delimiter ;
 
