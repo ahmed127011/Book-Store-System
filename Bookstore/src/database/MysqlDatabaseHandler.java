@@ -53,7 +53,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     @Override
     public boolean login(String username, String password) {
         Session session = factory.getCurrentSession();
-        String query = "From User u where u.pk.userName= '" + username + "'";
+        String query = "From User u where u.userName= '" + username + "'";
         session.beginTransaction();
         try {
             User user = (User) session.createQuery(query).getResultList().get(0);
@@ -165,7 +165,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         User manager=LoggedUser.getInstance().getUser();
         Session session = factory.getCurrentSession();
         if (manager.getIsManger()) {
-            String query = "From User u where u.pk.userName= '" +username + "'";
+            String query = "From User u where u.userName= '" +username + "'";
             System.out.println(query);
             session.beginTransaction();
             User user = (User) session.createQuery(query).getResultList().get(0);
@@ -179,6 +179,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
                return true;
            }catch (Exception e)
            {
+               session.getTransaction().rollback();
                e.printStackTrace();
                return false;
            }
@@ -270,6 +271,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
             return (List<Book>)books;
         } catch (Exception e) {
+            session.getTransaction().rollback();
             e.printStackTrace();
             return null;
         }
@@ -280,7 +282,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     @Override
     public void addToShoppingCard(String isbn, int quantity) {
         User user=LoggedUser.getInstance().getUser();
-        UserOrders order=new UserOrders(isbn,user.getUserName(),user.getEmail(),quantity);
+        UserOrders order=new UserOrders(isbn,user.getUserName(),quantity);
         ShoppingCart cart=LoggedUser.getInstance().getCart();
         cart.addOrder(order);
     }
@@ -317,6 +319,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         try {
             session.getTransaction().commit();
         }catch (Exception e){
+            session.getTransaction().rollback();
             e.printStackTrace();
             return false;
         }
@@ -333,6 +336,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
             return (List<LibraryOrders>) orders;
         }catch (Exception e)
         {
+            session.getTransaction().rollback();
             e.printStackTrace();
             return null;
         }

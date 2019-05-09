@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class LibraryOrders {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    //@GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "order_id")
     private long orderId;
     @Column(name = "ISBN")
