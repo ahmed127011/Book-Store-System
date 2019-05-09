@@ -16,7 +16,7 @@ public class LibraryOrders {
     private long quantity;
     @Column(name = "ordered_date")
     private java.sql.Date orderedDate;
-    private String confirmed;
+    private boolean confirmed;
 
     public LibraryOrders() {
     }
@@ -62,11 +62,11 @@ public class LibraryOrders {
     }
 
 
-    public String getConfirmed() {
+    public boolean getConfirmed() {
         return confirmed;
     }
 
-    public void setConfirmed(String confirmed) {
+    public void setConfirmed(boolean confirmed) {
         this.confirmed = confirmed;
     }
 

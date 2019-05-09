@@ -44,7 +44,7 @@ public interface DatabaseHandler {
 
     boolean removeShoppingCard(User user);
 
-    boolean Checkout(User user, String creditCard, Date expireDate);
+    boolean Checkout();
 
 
 }
