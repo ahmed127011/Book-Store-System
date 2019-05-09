@@ -12,11 +12,11 @@ public interface DatabaseHandler {
 
     void logout();
 
-    boolean addNewBook(Book book, User user);
+    boolean addNewBook(Book book);
 
-    boolean updateBookData(Book oldBook, Book newBook);
+    boolean updateBookData(Book book);
 
-    boolean UpdateUserData(User user);
+    boolean UpdateUserData();
 
     /**
      * order a book from suppliers
@@ -29,14 +29,14 @@ public interface DatabaseHandler {
 
     boolean confirmOrder(UserOrders order);
 
-    boolean promoteUser(User user,User manager);
+    boolean promoteUser(String username);
 
-    List<User> getTop5Customes();
+    List<User> getTop5Customers();
 
     List<Book> viewTopSellingBooks();
 
     //Todo get proper data about books ie. price ranges
-    List<Book> findBook(Book book);
+    List<Book> findBook(BookDAO book);
 
     boolean addToShoppingCard(User user, Book book, int quantity);
 
