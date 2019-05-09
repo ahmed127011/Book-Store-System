@@ -58,7 +58,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         try {
             User user = (User) session.createQuery(query).getResultList().get(0);
             session.getTransaction().commit();
-            if(user.getPassword().equals(password)){
+            if(user.passwordEqualityCheck(password)){
                 LoggedUser loggedUser=LoggedUser.getInstance();
                 loggedUser.setUser(user);
                 loggedUser.setCart(new ShoppingCart());
