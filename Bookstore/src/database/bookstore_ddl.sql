@@ -1,6 +1,6 @@
-create schema if not exists bookstore;
-
 drop schema bookstore;
+
+create schema if not exists bookstore;
 
 use bookstore;
 
@@ -80,10 +80,13 @@ create table if not exists library_orders
   index isbn_index (ISBN)
 );
 
+drop table user;
+drop table user_orders;
+
 create table if not exists user
 (
   user_name  varchar(30) not null,
-  email      varchar(45) not null,
+  email      varchar(45) not null unique,
   password   varchar(45) not null,
   phone      varchar(20),
   first_name varchar(20),
@@ -91,22 +94,23 @@ create table if not exists user
   address    varchar(45),
   is_manger  bit default 0,
 
-  primary key (user_name, email)
+  primary key (user_name)
 );
 
 create table if not exists user_orders
 (
+  order_id       int         not null auto_increment,
   ISBN           varchar(15) not null,
   user_name      varchar(30) not null,
-  email          varchar(45) not null,
   quantity       int default 0,
   check_out_date date,
 
-  primary key (ISBN, user_name, email),
+  primary key (order_id, ISBN, user_name),
+
   constraint ordered_book_fk
     foreign key (ISBN) references book (ISBN) on update cascade on delete cascade,
   constraint user_fk
-    foreign key (user_name, email) references user (user_name, email) on update cascade on delete cascade,
+    foreign key (user_name) references user (user_name) on update cascade on delete cascade,
 
   index isbn_index (ISBN),
   index user_index (user_name)
@@ -162,8 +166,17 @@ create event delete_old_orders
   do
   delete
   from user_orders
-  where check_out_date < date_sub(now(), interval 3 month)
+  where check_out_date < date_sub(now(), interval 3 month);
 $$
+
+create procedure get_total_sales()
+begin
+  select sum(book.price * user_orders.quantity) as total_sales
+  from user_orders
+         natural join book
+  where user_orders.check_out_date < date_sub(now(), interval 1 month);
+end $$
+
 
 delimiter ;
 
@@ -181,3 +194,6 @@ values ('History');
 
 insert into category (category_name)
 values ('Geography');
+
+insert into user
+values ('Khaled', 'k@k.com', '0000', '01201244416', 'Khaled', 'Abd', 'bla', 1);

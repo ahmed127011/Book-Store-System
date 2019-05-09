@@ -6,7 +6,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "user_orders")
 public class UserOrders {
-
     @EmbeddedId
     private OrderPK pk;
     private long quantity;
@@ -14,18 +13,27 @@ public class UserOrders {
     private java.sql.Date checkOutDate;
 
     public UserOrders() {
+        this.pk = new OrderPK();
     }
 
-    public UserOrders(String isbn, String userName, String email, long quantity) {
-        this.pk=new OrderPK();
+    public UserOrders(String isbn, String userName, long quantity) {
+        this.pk = new OrderPK();
         this.pk.isbn = isbn;
         this.pk.userName = userName;
-        this.pk.email = email;
         this.quantity = quantity;
     }
 
+    public long getOrderId() {
+        return this.pk.orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.pk.orderId = orderId;
+    }
+
+
     public String getIsbn() {
-        return pk.isbn;
+        return this.pk.isbn;
     }
 
     public void setIsbn(String isbn) {
@@ -34,20 +42,11 @@ public class UserOrders {
 
 
     public String getUserName() {
-        return pk.userName;
+        return this.pk.userName;
     }
 
     public void setUserName(String userName) {
         this.pk.userName = userName;
-    }
-
-
-    public String getEmail() {
-        return pk.email;
-    }
-
-    public void setEmail(String email) {
-        this.pk.email = email;
     }
 
 
@@ -71,19 +70,19 @@ public class UserOrders {
     @Override
     public boolean equals(Object object) {
         UserOrders order = (UserOrders) object;
-        return order.pk.isbn.equals(this.pk.isbn) &&
-                order.pk.userName.equals(this.pk.userName) &&
-                order.pk.email.equals(this.pk.email);
+        return order.pk.orderId == this.pk.orderId &&
+                order.pk.isbn.equals(this.pk.isbn) &&
+                order.pk.userName.equals(this.pk.userName);
     }
+
 }
 
 @Embeddable
- class OrderPK implements Serializable {
+class OrderPK implements Serializable {
+    @Column(name = "order_id")
+    long orderId;
     @Column(name = "ISBN")
     String isbn;
-
     @Column(name = "user_name")
     String userName;
-    String email;
-
 }

@@ -1,16 +1,18 @@
 package models;
 
-import javax.persistence.*;
-
-import controllers.ShoppingCart;
-
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
 public class User {
-    @EmbeddedId
-    private UserPK pk;
+
+    @Id
+    @Column(name = "user_name")
+    private String userName;
+    private String email;
     private String password;
     private String phone;
     @Column(name = "first_name")
@@ -21,34 +23,33 @@ public class User {
     @Column(name = "is_manger")
     private boolean isManger;
 
-
     public User() {
     }
 
     public User(String userName, String email, String password, String phone) {
-        this.pk=new UserPK();
-        this.pk.userName = userName;
-        this.pk.email = email;
+        this.userName = userName;
+        this.email = email;
         this.password = password;
         this.phone = phone;
-        this.isManger=false;
+        this.isManger = false;
     }
 
+
     public String getUserName() {
-        return pk.userName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        this.pk.userName = userName;
+        this.userName = userName;
     }
 
 
     public String getEmail() {
-        return pk.email;
+        return email;
     }
 
     public void setEmail(String email) {
-        this.pk.email = email;
+        this.email = email;
     }
 
 
@@ -105,25 +106,12 @@ public class User {
         this.isManger = isManger;
     }
 
-
-    public void checkout() {
-        // TODO Send Session from SessionFactory to checkout function
-//        this.shoppingCart.checkout(session);
-    }
-
     @Override
     public boolean equals(Object object) {
         User user = (User) object;
-        return user.pk.userName.equals(this.pk.userName) &&
-                user.pk.email.equals(this.pk.email) &&
+        return user.userName.equals(this.userName) &&
+                user.email.equals(this.email) &&
                 user.password.equals(this.password);
     }
 
-}
-
-@Embeddable
-class UserPK implements Serializable {
-    @Column(name = "user_name")
-    String userName;
-    String email;
 }
