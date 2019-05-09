@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Entity
 @Table(name = "user")
@@ -29,7 +31,7 @@ public class User {
     public User(String userName, String email, String password, String phone) {
         this.userName = userName;
         this.email = email;
-        this.password = password;
+        this.password = getHashedPassword(password);
         this.phone = phone;
         this.isManger = false;
     }
@@ -58,7 +60,7 @@ public class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = getHashedPassword(password);
     }
 
 
@@ -114,4 +116,19 @@ public class User {
                 user.password.equals(this.password);
     }
 
+    private String getHashedPassword(String password) {
+        String hashedPassword = "";
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.update(password.getBytes());
+            byte[] bytes = messageDigest.digest();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < bytes.length; i++)
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            hashedPassword = sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashedPassword;
+    }
 }
