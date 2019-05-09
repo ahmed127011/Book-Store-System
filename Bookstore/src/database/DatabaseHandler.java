@@ -8,7 +8,7 @@ import java.util.List;
 public interface DatabaseHandler {
     boolean signUp(User user);
 
-    boolean login(User user, String password);
+    boolean login(String username,String password);
 
     void logout();
 
@@ -29,7 +29,7 @@ public interface DatabaseHandler {
 
     boolean confirmOrder(UserOrders order);
 
-    boolean promoteUser(User user);
+    boolean promoteUser(User user,User manager);
 
     List<User> getTop5Customes();
 
