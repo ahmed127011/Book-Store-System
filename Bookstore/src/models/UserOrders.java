@@ -79,6 +79,7 @@ public class UserOrders {
 
 @Embeddable
 class OrderPK implements Serializable {
+  //  @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "order_id")
     long orderId;
     @Column(name = "ISBN")

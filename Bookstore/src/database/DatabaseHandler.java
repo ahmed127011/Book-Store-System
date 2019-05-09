@@ -18,16 +18,9 @@ public interface DatabaseHandler {
 
     boolean UpdateUserData();
 
-    /**
-     * order a book from suppliers
-     *
-     * @param book     book ISBN and data
-     * @param quantity
-     * @return orderID
-     */
-    int orderFromSupplier(Book book, int quantity);
+    boolean orderFromSupplier(String isbn, int quantity);
 
-    boolean confirmOrder(UserOrders order);
+    boolean confirmOrder(LibraryOrders order);
 
     boolean promoteUser(String username);
 
@@ -35,16 +28,16 @@ public interface DatabaseHandler {
 
     List<Book> viewTopSellingBooks();
 
-    //Todo get proper data about books ie. price ranges
     List<Book> findBook(BookDAO book);
 
-    boolean addToShoppingCard(User user, Book book, int quantity);
+    void addToShoppingCard(String isbn,int quantity);
 
-    List<Book> ShowShoppingCardInfo(User user);
+    List<UserOrders> ShowShoppingCardInfo();
 
-    boolean removeShoppingCard(User user);
+    boolean removeFromShoppingCard(String isbn);
 
     boolean Checkout();
+    List<LibraryOrders> getOrders();
 
 
 }

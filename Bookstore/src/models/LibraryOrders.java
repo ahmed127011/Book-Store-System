@@ -1,14 +1,13 @@
 package models;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "library_orders")
 public class LibraryOrders {
+
     @Id
+    //@GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "order_id")
     private long orderId;
     @Column(name = "ISBN")
