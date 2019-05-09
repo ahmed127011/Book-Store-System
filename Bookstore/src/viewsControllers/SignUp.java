@@ -10,7 +10,6 @@ import sample.Main;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,9 +23,7 @@ public class SignUp implements Initializable {
 
     }
 
-    public void backClk(ActionEvent actionEvent) throws IOException {
-        File file = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/login.fxml");
-        Parent root = FXMLLoader.load(file.toURI().toURL());
-        Main.primaryStage.setScene(new Scene(root));
+    public void backClk(ActionEvent actionEvent) {
+        ViewsController.getInstance().openLoginScreen();
     }
 }

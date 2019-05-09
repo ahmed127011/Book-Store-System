@@ -9,21 +9,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import models.Book;
 import models.User;
+import viewsControllers.ViewsController;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class Main extends Application {
 
-    public static Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        this.primaryStage = primaryStage;
-        File file = new File("src/views/login.fxml");
-        Parent root = FXMLLoader.load(file.toURI().toURL());
+    public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Library Management System");
-        primaryStage.setScene(new Scene(root));
+        ViewsController.getInstance().setPrimaryStage(primaryStage);
+        ViewsController.getInstance().openLoginScreen();
         primaryStage.show();
     }
 
