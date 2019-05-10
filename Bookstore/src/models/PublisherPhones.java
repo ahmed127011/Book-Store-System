@@ -10,9 +10,12 @@ public class PublisherPhones {
     PhonePK pk;
 
     public PublisherPhones() {
+        this.pk=new PhonePK();
+
     }
 
     public PublisherPhones(String publisherName, String phone) {
+        this.pk=new PhonePK();
         this.pk.publisherName = publisherName;
         this.pk.phone = phone;
     }
