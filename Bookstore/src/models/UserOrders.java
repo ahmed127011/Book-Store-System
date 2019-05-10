@@ -11,16 +11,23 @@ public class UserOrders {
     private long quantity;
     @Column(name = "check_out_date")
     private java.sql.Date checkOutDate;
+    @Column(name =  "credit_card_num")
+    private String creditCardNum;
+    @Column(name = "expiration_date")
+    private java.sql.Date expirationDate;
 
     public UserOrders() {
         this.pk = new OrderPK();
     }
 
-    public UserOrders(String isbn, String userName, long quantity) {
+    public UserOrders(String isbn, String userName, long quantity,
+                      String creditCardNum, java.sql.Date expirationDate) {
         this.pk = new OrderPK();
         this.pk.isbn = isbn;
         this.pk.userName = userName;
         this.quantity = quantity;
+        this.creditCardNum = creditCardNum;
+        this.expirationDate = expirationDate;
     }
 
     public long getOrderId() {
@@ -65,6 +72,23 @@ public class UserOrders {
 
     public void setCheckOutDate(java.sql.Date checkOutDate) {
         this.checkOutDate = checkOutDate;
+    }
+
+    public String getCreditCardNum() {
+        return creditCardNum;
+    }
+
+    public void setCreditCardNum(String creditCardNum) {
+        this.creditCardNum = creditCardNum;
+    }
+
+
+    public java.sql.Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(java.sql.Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     @Override
