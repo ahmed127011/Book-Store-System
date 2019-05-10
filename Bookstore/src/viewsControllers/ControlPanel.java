@@ -24,8 +24,8 @@ public class ControlPanel implements Initializable {
         // Todo : generate reports
     }
 
-    public void searchBooksClk(ActionEvent actionEvent) {
-        // Todo : open search for books
+    public void searchBooksClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openSearchForBooksScreen();
     }
 
     public void addBookClk(ActionEvent actionEvent) throws IOException {
@@ -60,5 +60,13 @@ public class ControlPanel implements Initializable {
                 alert.show();
             }
         }
+    }
+
+    public void confirmOrderClk(ActionEvent actionEvent) {
+
+    }
+
+    public void addPublisherClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openAddPublisherScreen();
     }
 }
