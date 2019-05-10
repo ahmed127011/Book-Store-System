@@ -116,6 +116,10 @@ public class User {
                 user.password.equals(this.password);
     }
 
+    public boolean passwordEqualityCheck(String password) {
+        return getHashedPassword(password).equals(this.password);
+    }
+
     private String getHashedPassword(String password) {
         String hashedPassword = "";
         try {
