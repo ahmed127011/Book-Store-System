@@ -49,6 +49,10 @@ public interface DatabaseHandler {
     boolean addNewPublisher(Publisher publisher);
     boolean addNewAuthor(BookAuthors author);
 
+    boolean addPublisherAddresses(Publisher publisher,List<String> addresses);
+
+    boolean addPublisherPhones(Publisher publisher,List<String> phones);
+
 
 
 }

@@ -417,6 +417,28 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         return add(author);
     }
 
+    @Override
+    public boolean addPublisherAddresses(Publisher publisher, List<String> addresses) {
+        boolean res=true;
+        for(String address:addresses)
+        {
+            res&=add(new PublisherAddresses(publisher.getPublisherName(),address));
+            if(!res) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addPublisherPhones(Publisher publisher, List<String> phones) {
+        boolean res=true;
+        for(String phone:phones)
+        {
+            res&=add(new PublisherPhones(publisher.getPublisherName(),phone));
+            if(!res) return false;
+        }
+        return true;
+    }
+
 
     private boolean add(Object o ){
         User user = LoggedUser.getInstance().getUser();
