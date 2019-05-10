@@ -240,7 +240,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         if (bookData.getTitle() != null) {
             if (flag)
                 query.append(" and ");
-            query.append("b.title like '");
+            query.append(" b.title like '");
             query.append(bookData.getTitle());
             query.append("%'");
             flag = true;
@@ -262,7 +262,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         if (bookData.getPublisher() != null) {
             if (flag)
                 query.append(" and ");
-            query.append("b.publisherName = '");
+            query.append(" b.publisherName = '");
             query.append(bookData.getPublisher());
             query.append("'");
             flag = true;
@@ -271,7 +271,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         if (bookData.getCategories() != null) {
             if (flag)
                 query.append(" and ");
-            query.append("b.categoryName in (");
+            query.append(" b.categoryName in (");
             int i = 0;
             for (String category : bookData.getCategories()) {
                 query.append(" '");
@@ -290,7 +290,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         try {
             List<?> books = session.createQuery(query.toString()).getResultList();
             session.getTransaction().commit();
-
+            if(books==null) return new LinkedList<>();
             return (List<Book>) books;
         } catch (Exception e) {
             session.getTransaction().rollback();
