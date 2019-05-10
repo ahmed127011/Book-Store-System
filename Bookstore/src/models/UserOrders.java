@@ -20,14 +20,11 @@ public class UserOrders {
         this.pk = new OrderPK();
     }
 
-    public UserOrders(String isbn, String userName, long quantity,
-                      String creditCardNum, java.sql.Date expirationDate) {
+    public UserOrders(String isbn, String userName, long quantity) {
         this.pk = new OrderPK();
         this.pk.isbn = isbn;
         this.pk.userName = userName;
         this.quantity = quantity;
-        this.creditCardNum = creditCardNum;
-        this.expirationDate = expirationDate;
     }
 
     public long getOrderId() {
