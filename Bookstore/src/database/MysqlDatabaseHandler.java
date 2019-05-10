@@ -5,17 +5,16 @@ import models.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import sun.rmi.runtime.Log;
-
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
-import java.util.Vector;
 
 public class MysqlDatabaseHandler implements DatabaseHandler {
     private SessionFactory factory;
     private static MysqlDatabaseHandler instance;
+
     private MysqlDatabaseHandler() {
         // create session factory
         factory = new Configuration()
@@ -33,11 +32,13 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
         // create session
     }
-    public static DatabaseHandler getInstance(){
-        if(instance==null)
-            instance=new MysqlDatabaseHandler();
+
+    public static DatabaseHandler getInstance() {
+        if (instance == null)
+            instance = new MysqlDatabaseHandler();
         return instance;
     }
+
     @Override
     public boolean signUp(User user) {
         Session session = factory.getCurrentSession();
@@ -62,10 +63,11 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         try {
             User user = (User) session.createQuery(query).getResultList().get(0);
             session.getTransaction().commit();
-            if(user.passwordEqualityCheck(password)){
-                LoggedUser loggedUser=LoggedUser.getInstance();
+            if (user.passwordEqualityCheck(password)) {
+                LoggedUser loggedUser = LoggedUser.getInstance();
                 loggedUser.setUser(user);
                 loggedUser.setCart(new ShoppingCart());
+                loggedUser.setLoggedIn(true);
                 return true;
             }
             return false;
@@ -83,7 +85,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean addNewBook(Book book) {
-        User user=LoggedUser.getInstance().getUser();
+        User user = LoggedUser.getInstance().getUser();
         if (!user.getIsManger())
             return false;
         Session session = factory.getCurrentSession();
@@ -100,8 +102,8 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean updateBookData(Book newBook) {
-        User user=LoggedUser.getInstance().getUser();
-        if(!user.getIsManger())
+        User user = LoggedUser.getInstance().getUser();
+        if (!user.getIsManger())
             return false;
         Session session = factory.getCurrentSession();
 
@@ -118,7 +120,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean UpdateUserData() {
-        User user=LoggedUser.getInstance().getUser();
+        User user = LoggedUser.getInstance().getUser();
         Session session = factory.getCurrentSession();
 
         session.beginTransaction();
@@ -135,11 +137,11 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean orderFromSupplier(String isbn, int quantity) {
-        if(!LoggedUser.getInstance().getUser().getIsManger())
+        if (!LoggedUser.getInstance().getUser().getIsManger())
             return false;
-        Session session=factory.getCurrentSession();
+        Session session = factory.getCurrentSession();
         session.beginTransaction();
-        LibraryOrders order=new LibraryOrders(isbn,quantity);
+        LibraryOrders order = new LibraryOrders(isbn, quantity);
         session.save(order);
         session.getTransaction().commit();
         return true;
@@ -147,7 +149,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean confirmOrder(LibraryOrders order) {
-        User user=LoggedUser.getInstance().getUser();
+        User user = LoggedUser.getInstance().getUser();
         if (!user.getIsManger())
             return false;
         Session session = factory.getCurrentSession();
@@ -166,27 +168,26 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean promoteUser(String username) {
-        User manager=LoggedUser.getInstance().getUser();
+        User manager = LoggedUser.getInstance().getUser();
         Session session = factory.getCurrentSession();
         if (manager.getIsManger()) {
-            String query = "From User u where u.userName= '" +username + "'";
+            String query = "From User u where u.userName= '" + username + "'";
             System.out.println(query);
             session.beginTransaction();
             User user = (User) session.createQuery(query).getResultList().get(0);
-           try {
-               session.getTransaction().commit();
-               user.setIsManger(true);
-               session = factory.getCurrentSession();
-               session.beginTransaction();
-               session.update(user);
-               session.getTransaction().commit();
-               return true;
-           }catch (Exception e)
-           {
-               session.getTransaction().rollback();
-               e.printStackTrace();
-               return false;
-           }
+            try {
+                session.getTransaction().commit();
+                user.setIsManger(true);
+                session = factory.getCurrentSession();
+                session.beginTransaction();
+                session.update(user);
+                session.getTransaction().commit();
+                return true;
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+                return false;
+            }
 
         }
         return false;
@@ -194,14 +195,14 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public int getprevMonthSales() {
-        Session session=factory.getCurrentSession();
+        Session session = factory.getCurrentSession();
         session.beginTransaction();
-        StoredProcedureQuery query=session.createStoredProcedureQuery("get_total_sales");
-        query.registerStoredProcedureParameter("sales",Integer.class, ParameterMode.OUT);
+        StoredProcedureQuery query = session.createStoredProcedureQuery("get_total_sales");
+        query.registerStoredProcedureParameter("sales", Integer.class, ParameterMode.OUT);
         query.execute();
-        if(query.getOutputParameterValue("sales")==null)
+        if (query.getOutputParameterValue("sales") == null)
             return 0;
-        int sales =(int)query.getOutputParameterValue("sales");
+        int sales = (int) query.getOutputParameterValue("sales");
         session.getTransaction().commit();
         return sales;
 
@@ -210,26 +211,26 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public List<String> getTop5Customers() {
-        Session session=factory.getCurrentSession();
+        Session session = factory.getCurrentSession();
         session.beginTransaction();
-        StoredProcedureQuery query=session.createStoredProcedureQuery("get_top_users");
+        StoredProcedureQuery query = session.createStoredProcedureQuery("get_top_users");
         query.execute();
-        if(query.getResultList()==null)
+        if (query.getResultList() == null)
             return new ArrayList<>();
-        List<String> users =(List<String>) query.getResultList();
+        List<String> users = (List<String>) query.getResultList();
         session.getTransaction().commit();
         return users;
     }
 
     @Override
     public List<String> viewTopSellingBooks() {
-        Session session=factory.getCurrentSession();
+        Session session = factory.getCurrentSession();
         session.beginTransaction();
-        StoredProcedureQuery query=session.createStoredProcedureQuery("get_top_books");
+        StoredProcedureQuery query = session.createStoredProcedureQuery("get_top_books");
         query.execute();
-        if(query.getResultList()==null)
+        if (query.getResultList() == null)
             return new ArrayList<>();
-        List<String> books =(List<String>) query.getResultList();
+        List<String> books = (List<String>) query.getResultList();
         session.getTransaction().commit();
         return books;
 
@@ -239,61 +240,55 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     @Override
     public List<Book> findBook(BookDAO bookData) {
         Session session = factory.getCurrentSession();
-        StringBuilder query =new StringBuilder( "From Book b where");
-        boolean flag=false;
-        if(bookData.getIsbn()!=null)
-        {
+        StringBuilder query = new StringBuilder("From Book b where");
+        boolean flag = false;
+        if (bookData.getIsbn() != null) {
             query.append(" b.isbn like '");
             query.append(bookData.getIsbn());
             query.append("%'");
-            flag=true;
+            flag = true;
         }
-        if(bookData.getTitle()!=null)
-        {
-            if(flag)
+        if (bookData.getTitle() != null) {
+            if (flag)
                 query.append(" and ");
             query.append("b.title like '");
             query.append(bookData.getTitle());
             query.append("%'");
-            flag=true;
+            flag = true;
         }
-        if(bookData.getLowerPrice()!=0)
-        {
-            if(flag)
+        if (bookData.getLowerPrice() != 0) {
+            if (flag)
                 query.append(" and ");
             query.append(" b.price >= ");
             query.append(bookData.getLowerPrice());
-            flag=true;
+            flag = true;
         }
-        if(bookData.getUpperPrice()!=0)
-        {
-            if(flag)
+        if (bookData.getUpperPrice() != 0) {
+            if (flag)
                 query.append(" and ");
             query.append(" b.price <= ");
             query.append(bookData.getUpperPrice());
-            flag=true;
+            flag = true;
         }
-        if(bookData.getPublisher()!=null) {
-            if(flag)
+        if (bookData.getPublisher() != null) {
+            if (flag)
                 query.append(" and ");
             query.append("b.publisherName = '");
             query.append(bookData.getPublisher());
             query.append("'");
-            flag=true;
+            flag = true;
 
         }
-        if(bookData.getCategories()!=null)
-        {
-            if(flag)
+        if (bookData.getCategories() != null) {
+            if (flag)
                 query.append(" and ");
             query.append("b.categoryName in (");
-            int i=0;
-            for(String category:bookData.getCategories())
-            {
+            int i = 0;
+            for (String category : bookData.getCategories()) {
                 query.append(" '");
                 query.append(category);
                 query.append("' ");
-                if(i!=bookData.getCategories().size()-1){
+                if (i != bookData.getCategories().size() - 1) {
                     query.append(",");
                 }
                 i++;
@@ -304,10 +299,10 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         System.out.println(query.toString());
         session.beginTransaction();
         try {
-            List<?> books =  session.createQuery(query.toString()).getResultList();
+            List<?> books = session.createQuery(query.toString()).getResultList();
             session.getTransaction().commit();
 
-            return (List<Book>)books;
+            return (List<Book>) books;
         } catch (Exception e) {
             session.getTransaction().rollback();
             e.printStackTrace();
@@ -319,25 +314,24 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public void addToShoppingCard(String isbn, int quantity) {
-        User user=LoggedUser.getInstance().getUser();
-        UserOrders order=new UserOrders(isbn,user.getUserName(),quantity);
-        ShoppingCart cart=LoggedUser.getInstance().getCart();
+        User user = LoggedUser.getInstance().getUser();
+        UserOrders order = new UserOrders(isbn, user.getUserName(), quantity);
+        ShoppingCart cart = LoggedUser.getInstance().getCart();
         cart.addOrder(order);
     }
 
     @Override
     public List<UserOrders> ShowShoppingCardInfo() {
-        ShoppingCart cart=LoggedUser.getInstance().getCart();
+        ShoppingCart cart = LoggedUser.getInstance().getCart();
         return cart.getOrders();
 
     }
 
     @Override
     public boolean removeFromShoppingCard(String isbn) {
-        ShoppingCart cart=LoggedUser.getInstance().getCart();
-        for(UserOrders order:cart.getOrders())
-        {
-            if(order.getIsbn().equals(isbn)){
+        ShoppingCart cart = LoggedUser.getInstance().getCart();
+        for (UserOrders order : cart.getOrders()) {
+            if (order.getIsbn().equals(isbn)) {
                 cart.getOrders().remove(order);
                 return true;
             }
@@ -347,38 +341,71 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean Checkout() {
-        ShoppingCart cart=LoggedUser.getInstance().getCart();
-        Session session =factory.getCurrentSession();
+        ShoppingCart cart = LoggedUser.getInstance().getCart();
+        Session session = factory.getCurrentSession();
         session.beginTransaction();
-        for(UserOrders order:cart.getOrders())
-        {
+        for (UserOrders order : cart.getOrders()) {
+            java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+            order.setCheckOutDate(date);
             session.save(order);
         }
         try {
             session.getTransaction().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             session.getTransaction().rollback();
             e.printStackTrace();
             return false;
         }
         return true;
     }
+
     @Override
-    public List<LibraryOrders> getOrders(){
-        Session session=factory.getCurrentSession();
+    public List<LibraryOrders> getOrders() {
+        Session session = factory.getCurrentSession();
         String query = "From LibraryOrders l";
         session.beginTransaction();
         try {
             List<?> orders = session.createQuery(query).getResultList();
             session.getTransaction().commit();
             return (List<LibraryOrders>) orders;
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             session.getTransaction().rollback();
             e.printStackTrace();
             return null;
         }
 
+    }
+
+    @Override
+    public List<String> getCategories() {
+        Session session = factory.getCurrentSession();
+        String query = "From Category c";
+        session.beginTransaction();
+        try {
+            List<?> categories = session.createQuery(query).getResultList();
+            session.getTransaction().commit();
+            return (List<String>) categories;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<Publisher> getPublishers() {
+        Session session = factory.getCurrentSession();
+        String query = "From Publisher p";
+        session.beginTransaction();
+        try {
+            List<?> publishers = session.createQuery(query).getResultList();
+            session.getTransaction().commit();
+            return (List<Publisher>) publishers;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

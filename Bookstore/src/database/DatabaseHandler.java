@@ -8,7 +8,7 @@ import java.util.List;
 public interface DatabaseHandler {
     boolean signUp(User user);
 
-    boolean login(String username,String password);
+    boolean login(String username, String password);
 
     void logout();
 
@@ -32,14 +32,19 @@ public interface DatabaseHandler {
 
     List<Book> findBook(BookDAO book);
 
-    void addToShoppingCard(String isbn,int quantity);
+    void addToShoppingCard(String isbn, int quantity);
 
     List<UserOrders> ShowShoppingCardInfo();
 
     boolean removeFromShoppingCard(String isbn);
 
     boolean Checkout();
+
     List<LibraryOrders> getOrders();
+
+    List<String> getCategories();
+
+    List<Publisher> getPublishers();
 
 
 }
