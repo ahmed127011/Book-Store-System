@@ -39,7 +39,11 @@ public class Login implements Initializable {
                 @Override
                 public void handle(DialogEvent dialogEvent) {
                     if(LoggedUser.getInstance().getUser().getIsManger()) {
-                        ViewsController.getInstance().openControlPanelScreen();
+                        try {
+                            ViewsController.getInstance().openControlPanelScreen();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else  {
                         // Todo : go to user Home page
                     }
@@ -52,7 +56,7 @@ public class Login implements Initializable {
         }
     }
 
-    public void SignUpClk(ActionEvent actionEvent) {
+    public void SignUpClk(ActionEvent actionEvent) throws IOException {
         ViewsController.getInstance().openSignUpScreen();
     }
 
