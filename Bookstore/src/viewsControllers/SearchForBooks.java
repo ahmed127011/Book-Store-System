@@ -145,7 +145,8 @@ public class SearchForBooks implements Initializable {
             deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    // Todo
+                    databaseHandler.removeBook(book);
+                    resultsVBox.getChildren().remove(hBox);
                 }
             });
 
