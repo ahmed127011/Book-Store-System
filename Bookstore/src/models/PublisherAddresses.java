@@ -10,6 +10,8 @@ public class PublisherAddresses {
     private Pk pk;
 
     public PublisherAddresses() {
+        pk=new Pk();
+
     }
 
     public PublisherAddresses(String publisherName, String address) {
