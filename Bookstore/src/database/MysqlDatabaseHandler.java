@@ -86,19 +86,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean addNewBook(Book book) {
-        User user = LoggedUser.getInstance().getUser();
-        if (!user.getIsManger())
-            return false;
-        Session session = factory.getCurrentSession();
-        session.beginTransaction();
-        session.save(book);
-        try {
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        return add(book);
     }
 
     @Override
@@ -419,5 +407,36 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
             return null;
         }
     }
+
+    @Override
+    public boolean addNewPublisher(Publisher publisher) {
+    return add(publisher);
+    }
+
+
+
+    @Override
+    public boolean addNewAuthor(BookAuthors author) {
+        return add(author);
+    }
+
+
+    private boolean add(Object o ){
+        User user = LoggedUser.getInstance().getUser();
+        if (!user.getIsManger())
+            return false;
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        session.save(o);
+        try {
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+
 
 }

@@ -46,5 +46,9 @@ public interface DatabaseHandler {
 
     List<Publisher> getPublishers();
 
+    boolean addNewPublisher(Publisher publisher);
+    boolean addNewAuthor(BookAuthors author);
+
+
 
 }
