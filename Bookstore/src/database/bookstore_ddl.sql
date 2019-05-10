@@ -176,34 +176,32 @@ create event delete_old_library_orders
   from library_orders
   where ordered_date < date_sub(now(), interval 3 month);
 $$
-
-create procedure get_total_sales()
+drop procedure get_total_sales;
+create procedure get_total_sales(OUT sales int)
 begin
-  select sum(book.price * user_orders.quantity) as total_sales
+  select sum(book.price * user_orders.quantity)into sales 
   from user_orders
-         natural join book
-  where user_orders.check_out_date < date_sub(now(), interval 1 month);
+		join book on user_orders.ISBN=book.ISBN
+ where user_orders.check_out_date >= date_sub(now(), interval 1 month);
 end $$
-
 create procedure get_top_users()
 begin
-  select sales.user_name
+  select sales.user_name 
   from (select user_orders.user_name, sum(book.price * user_orders.quantity) as sale
         from user_orders
-               natural join book
+               join book on book.ISBN=user_orders.ISBN
         group by user_orders.user_name
         order by sale desc) as sales
   limit 5;
 end $$
-
 create procedure get_top_books()
 begin
   select books.title
     from (select book.title, sum(user_orders.quantity) as book_count
       from book
-      natural join user_orders
-      group by ISBN
-      order by book_count desc) as books
+	join user_orders on book.ISBN=user_orders.ISBN
+      group by user_orders.ISBN
+         order by book_count desc) as books
     limit 10;
 end $$
 
