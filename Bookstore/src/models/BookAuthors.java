@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Table(name = "book_authors")
 public class BookAuthors {
     @EmbeddedId
-    AuthorsPK pk;
+   private AuthorsPK pk;
 
     public BookAuthors() {
     }

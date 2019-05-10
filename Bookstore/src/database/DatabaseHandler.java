@@ -53,6 +53,6 @@ public interface DatabaseHandler {
 
     boolean addPublisherPhones(Publisher publisher,List<String> phones);
 
-
+    boolean removeBook(Book book);
 
 }
