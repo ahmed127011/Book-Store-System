@@ -338,8 +338,11 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
             order.setCheckOutDate(date);
             order.setCreditCardNum(creditCardNum);
             order.setExpirationDate(expirationDate);
-            //TODO check credit card validity
-            session.save(order);
+            if (order.isValidCreditCardNum() && order.isValidExpirationDate()) {
+                session.save(order);
+            } else {
+                System.out.println("Invalid Credit Card info.");
+            }
         }
         try {
             session.getTransaction().commit();
