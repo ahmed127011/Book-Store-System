@@ -316,7 +316,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     @Override
     public void addToShoppingCard(String isbn, int quantity) {
         User user = LoggedUser.getInstance().getUser();
-        UserOrders order = new UserOrders(isbn, user.getUserName(), quantity, "", null);
+        UserOrders order = new UserOrders(isbn, user.getUserName(), quantity);
         ShoppingCart cart = LoggedUser.getInstance().getCart();
         cart.addOrder(order);
     }
@@ -350,8 +350,11 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
             order.setCheckOutDate(date);
             order.setCreditCardNum(creditCardNum);
             order.setExpirationDate(expirationDate);
-            //TODO check credit card validity
-            session.save(order);
+            if (order.isValidCreditCardNum() && order.isValidExpirationDate()) {
+                session.save(order);
+            } else {
+                System.out.println("Invalid Credit Card info.");
+            }
         }
         try {
             session.getTransaction().commit();
