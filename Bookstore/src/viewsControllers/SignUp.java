@@ -45,7 +45,7 @@ public class SignUp implements Initializable {
 
     public void onSceneShow() {
         User curUser = LoggedUser.getInstance().getUser();
-        if(curUser == null) { // Not logged in : Sign Up
+        if(!LoggedUser.getInstance().isLoggedIn()) { // Not logged in : Sign Up
             titleLabel.setText("Sign Up");
             submitBtn.setText("Sign Up");
             userNameTxtField.setText("");
@@ -59,6 +59,7 @@ public class SignUp implements Initializable {
             titleLabel.setText("Edit my Profile");
             submitBtn.setText("Save");
             userNameTxtField.setText(curUser.getUserName());
+            passwordTxtField.setText("");
             passwordTxtField.setPromptText("Unchanged");
             emailTxtField.setText(curUser.getEmail());
             firstNameTxtField.setText(curUser.getFirstName());
@@ -82,7 +83,7 @@ public class SignUp implements Initializable {
         String lastName = lastNameTxtField.getText();
         String address = addressTxtField.getText();
         User curUser = LoggedUser.getInstance().getUser();
-        if(curUser == null) { // Not logged in : Sign Up
+        if(!LoggedUser.getInstance().isLoggedIn()) { // Not logged in : Sign Up
             User newuser = new User(username, email, password, phone);
             newuser.setFirstName(firstName);
             newuser.setLastName(lastName);
@@ -107,7 +108,8 @@ public class SignUp implements Initializable {
         } else { // Logged in : Edit Profile
             curUser.setUserName(username);
             curUser.setEmail(email);
-            curUser.setPassword(password);
+            if(password.length() > 0)
+                curUser.setPassword(password);
             curUser.setPhone(phone);
             curUser.setFirstName(firstName);
             curUser.setLastName(lastName);

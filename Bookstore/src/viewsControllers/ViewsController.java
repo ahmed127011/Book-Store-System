@@ -24,23 +24,31 @@ public class ViewsController {
     }
 
     private Stage primaryStage;
+
     private Scene loginScreenScene;
     private Scene signUpScreenScene;
     private Scene controlPanelScene;
     private Scene addBookScene;
+    private Scene addPublisherScene;
+    private Scene searchForBooksScene;
 
     private URL loginScreenUrl;
     private URL signUpScreenUrl;
     private URL controlPanelScreenUrl;
     private URL addBookPanelScreenUrl;
+    private URL addPublisherScreenUrl;
+    private URL searchForBooksScreenUrl;
 
     private Parent controlPanelScreenParent;
     private Parent signUpScreenParent;
     private Parent loginScreenParent;
     private Parent addBookScreenParent;
+    private Parent addPublisherScreenParent;
+    private Parent searchForBooksScreenParent;
 
     private SignUp signUpController;
     private AddBook addBookController;
+    private SearchForBooks searchForBooksController;
 
     public void setAddBookController(AddBook addBookController) {
         this.addBookController = addBookController;
@@ -48,6 +56,10 @@ public class ViewsController {
 
     public void setSignUpController(SignUp signUpController) {
         this.signUpController = signUpController;
+    }
+
+    public void setSearchForBooksController(SearchForBooks searchForBooksController) {
+        this.searchForBooksController = searchForBooksController;
     }
 
     private ViewsController() throws IOException {
@@ -62,6 +74,12 @@ public class ViewsController {
 
         File addBookScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/addBook.fxml");
         addBookPanelScreenUrl = addBookScreenFile.toURI().toURL();
+
+        File addPublisherScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/addPublisher.fxml");
+        addPublisherScreenUrl = addPublisherScreenFile.toURI().toURL();
+
+        File searchForBooksScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/searchForBooks.fxml");
+        searchForBooksScreenUrl = searchForBooksScreenFile.toURI().toURL();
     }
 
     public void openLoginScreen() throws IOException {
@@ -96,6 +114,23 @@ public class ViewsController {
         }
         addBookController.onSceneShow(null);
         primaryStage.setScene(addBookScene);
+    }
+
+    public void openSearchForBooksScreen() throws IOException {
+        if(searchForBooksScreenParent == null) {
+            searchForBooksScreenParent = FXMLLoader.load(searchForBooksScreenUrl);
+            searchForBooksScene = new Scene(searchForBooksScreenParent);
+        }
+        searchForBooksController.onSceneShow();
+        primaryStage.setScene(searchForBooksScene);
+    }
+
+    public void openAddPublisherScreen() throws IOException {
+        if(addPublisherScreenParent == null) {
+            addPublisherScreenParent = FXMLLoader.load(addPublisherScreenUrl);
+            addPublisherScene = new Scene(addPublisherScreenParent);
+        }
+        primaryStage.setScene(addPublisherScene);
     }
 
     public void setPrimaryStage(Stage primaryStage) {

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="340.0" prefWidth="416.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewsControllers.ControlPanel">
+<AnchorPane prefHeight="382.0" prefWidth="416.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewsControllers.ControlPanel">
    <children>
       <Label layoutX="67.0" layoutY="22.0" text="Control Panel">
          <font>
@@ -15,9 +15,11 @@
        <Button layoutX="25.0" layoutY="140.0" mnemonicParsing="false" onAction="#promoteUserClk" prefHeight="26.0" prefWidth="140.0" text="Promote a user" />
        <Button layoutX="25.0" layoutY="200.0" mnemonicParsing="false" onAction="#editProfileClk" prefHeight="26.0" prefWidth="140.0" text="Edit My Profile" />
        <Button layoutX="25.0" layoutY="260.0" mnemonicParsing="false" onAction="#logoutClk" prefHeight="26.0" prefWidth="140.0" text="Log out" />
+       <Button layoutX="25.0" layoutY="320.0" mnemonicParsing="false" onAction="#confirmOrderClk" prefHeight="26.0" prefWidth="140.0" text="Confirm Orders" />
 
        <Button layoutX="245.0" layoutY="140.0" mnemonicParsing="false" onAction="#addBookClk" prefHeight="26.0" prefWidth="140.0" text="Add a book" />
        <Button layoutX="245.0" layoutY="200.0" mnemonicParsing="false" onAction="#searchBooksClk" prefHeight="26.0" prefWidth="140.0" text="Search for books" />
        <Button layoutX="245.0" layoutY="260.0" mnemonicParsing="false" onAction="#generateReportClk" prefHeight="26.0" prefWidth="140.0" text="Generate Report" />
+       <Button layoutX="245.0" layoutY="320.0" mnemonicParsing="false" onAction="#addPublisherClk" prefHeight="26.0" prefWidth="140.0" text="Add Publisher" />
    </children>
 </AnchorPane>
