@@ -11,8 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewsControllers.SearchForBooks">
-    <VBox alignment="CENTER" layoutX="0.0" layoutY="14.0" prefHeight="51.0" prefWidth="660.0">
+<AnchorPane prefHeight="613.0" prefWidth="871.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewsControllers.SearchForBooks">
+    <VBox alignment="CENTER" layoutX="0.0" layoutY="14.0" prefHeight="51.0" prefWidth="871.0">
         <children>
             <Label fx:id="titleLabel" text="Search For Book">
                 <font>
@@ -23,19 +23,19 @@
     </VBox>
 
    <CheckBox layoutX="40.0" layoutY="85.0" mnemonicParsing="false" onAction="#titleChkChanged" text="Title" />
-   <TextField disable="true" fx:id="titleTxtField" layoutX="40.0" layoutY="110.0" />
+   <TextField fx:id="titleTxtField" disable="true" layoutX="40.0" layoutY="110.0" />
 
    <CheckBox layoutX="240.0" layoutY="85.0" mnemonicParsing="false" onAction="#isbnChkChanged" text="ISBN" />
-   <TextField disable="true" fx:id="isbnTxtField" layoutX="240.0" layoutY="110.0" />
+   <TextField fx:id="isbnTxtField" disable="true" layoutX="240.0" layoutY="110.0" />
 
     <CheckBox layoutX="440.0" layoutY="85.0" mnemonicParsing="false" onAction="#authorChkChanged" text="Author" />
-    <TextField disable="true" fx:id="authorTxtField" layoutX="440.0" layoutY="110.0" />
+    <TextField fx:id="authorTxtField" disable="true" layoutX="440.0" layoutY="110.0" />
 
-   <CheckBox layoutX="40.0" layoutY="156.0" mnemonicParsing="false" onAction="#publisherChkChanged" text="Publisher" />
-   <ChoiceBox disable="true" fx:id="publisherChioceBox" layoutX="40.0" layoutY="181.0" prefHeight="26.0" prefWidth="171.0" />
+   <CheckBox layoutX="640.0" layoutY="85.0" mnemonicParsing="false" onAction="#publisherChkChanged" text="Publisher" />
+   <ChoiceBox fx:id="publisherChioceBox" disable="true" layoutX="640.0" layoutY="110.0" prefHeight="26.0" prefWidth="171.0" />
 
-   <Label layoutX="230.0" layoutY="153.0" text="Category" />
-   <HBox alignment="CENTER" layoutX="219.0" layoutY="174.0" prefHeight="39.0" prefWidth="426.0" spacing="10.0">
+   <Label layoutX="436.0" layoutY="153.0" text="Category" />
+   <HBox alignment="CENTER" layoutX="436.0" layoutY="174.0" prefHeight="39.0" prefWidth="426.0" spacing="10.0">
       <children>
          <CheckBox fx:id="artChkBox" mnemonicParsing="false" selected="true" text="Art" />
          <CheckBox fx:id="geographyChkBox" mnemonicParsing="false" selected="true" text="'Geography'" />
@@ -45,26 +45,35 @@
       </children>
    </HBox>
 
-   <Button layoutX="299.0" layoutY="231.0" mnemonicParsing="false" onAction="#searchClk" text="Search" />
+   <Button layoutX="409.0" layoutY="234.0" mnemonicParsing="false" onAction="#searchClk" text="Search" />
 
-    
-   <VBox alignment="CENTER" layoutY="306.0" prefHeight="234.0" prefWidth="660.0">
+    <VBox alignment="CENTER" layoutY="277.0" prefHeight="39.0" prefWidth="871.0">
+        <children>
+            <Label text="Search Results">
+                <font>
+                    <Font size="28.0" />
+                </font>
+            </Label>
+        </children>
+    </VBox>
+
+   <VBox alignment="CENTER" layoutY="329.0" prefHeight="234.0" prefWidth="871.0">
       <children>
-         <ScrollPane prefHeight="226.0" prefWidth="660.0">
+         <ScrollPane prefHeight="226.0" prefWidth="867.0">
            <content>
-               <VBox fx:id="resultsVBox" />
+               <VBox fx:id="resultsVBox">
+               </VBox>
            </content>
          </ScrollPane>
-      </children></VBox>
-   <VBox alignment="CENTER" layoutY="270.0" prefHeight="39.0" prefWidth="660.0">
-      <children>
-         <Label text="Search Results">
-            <font>
-               <Font size="28.0" />
-            </font>
-         </Label>
       </children>
    </VBox>
+
+   <CheckBox layoutX="40.0" layoutY="161.0" mnemonicParsing="false" onAction="#minPriceChkChanged" text="Minimum Price" />
+   <TextField fx:id="minPriceTxtField" disable="true" layoutX="40.0" layoutY="186.0" />
+   <CheckBox layoutX="240.0" layoutY="161.0" mnemonicParsing="false" onAction="#maxPriceChkChanged" text="Max Price" />
+   <TextField fx:id="maxPriceTxtField" disable="true" layoutX="240.0" layoutY="186.0" />
+   <Button layoutX="695.0" layoutY="573.0" mnemonicParsing="false" onAction="#checkOutClk" text="Check Out" />
+   <Button layoutX="62.0" layoutY="573.0" mnemonicParsing="false" onAction="#backClk" text="Back" />
     
 
 </AnchorPane>

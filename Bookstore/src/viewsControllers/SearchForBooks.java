@@ -4,16 +4,17 @@ import database.DatabaseHandler;
 import database.MysqlDatabaseHandler;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import models.Book;
 import models.BookDAO;
 import models.Publisher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,8 @@ public class SearchForBooks implements Initializable {
     public CheckBox religionChkBox;
     public CheckBox scienceChkBox;
     public VBox resultsVBox;
+    public TextField minPriceTxtField;
+    public TextField maxPriceTxtField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -72,6 +75,10 @@ public class SearchForBooks implements Initializable {
             bookDAO.setAuthor(authorTxtField.getText());
         if(!publisherChioceBox.isDisabled())
             bookDAO.setPublisher(publisherChioceBox.getValue().toString());
+        if(!minPriceTxtField.isDisabled())
+            bookDAO.setLowerPrice(Long.valueOf(minPriceTxtField.getText()));
+        if(!maxPriceTxtField.isDisabled())
+            bookDAO.setLowerPrice(Long.valueOf(maxPriceTxtField.getText()));
         bookDAO.setCategories(getChosenCategories());
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         List<Book> books = databaseHandler.findBook(bookDAO);
@@ -79,11 +86,82 @@ public class SearchForBooks implements Initializable {
     }
 
     private void addBooksToResult(List<Book> books) {
-        System.out.println(books);
+        DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         for (Book book:
              books) {
-            resultsVBox.getChildren().add(new Label(book.getIsbn()));
-            resultsVBox.getChildren().add(new Label(book.getTitle()));
+            HBox hBox = new HBox();
+            hBox.setAlignment(Pos.BASELINE_CENTER);
+            Label titleLabel = new Label(book.getTitle());
+            titleLabel.setPrefWidth(100);
+            Label isbnLabel = new Label(book.getIsbn());
+            isbnLabel.setPrefWidth(100);
+            isbnLabel.setAlignment(Pos.CENTER);
+            Label categoryLabel = new Label(book.getCategoryName());
+            categoryLabel.setPrefWidth(100);
+            categoryLabel.setAlignment(Pos.CENTER);
+            Label priceLabel = new Label(String.valueOf(book.getPrice()));
+            priceLabel.setPrefWidth(100);
+            priceLabel.setAlignment(Pos.CENTER);
+            Label publiserLabel = new Label(book.getPublisherName());
+            publiserLabel.setPrefWidth(100);
+            publiserLabel.setAlignment(Pos.CENTER);
+            TextField buyingQuantity = new TextField();
+            buyingQuantity.setPrefWidth(50);
+            buyingQuantity.setAlignment(Pos.CENTER);
+            Button buyBtn = new Button("Buy");
+            buyBtn.setPrefWidth(50);
+            buyBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    databaseHandler.addToShoppingCard(book.getIsbn(), Integer.parseInt(buyingQuantity.getText()));
+                }
+            });
+            TextField orderQuantity = new TextField();
+            orderQuantity.setPrefWidth(50);
+            orderQuantity.setAlignment(Pos.CENTER);
+            Button orderBtn = new Button("Order");
+            orderBtn.setPrefWidth(100);
+            orderBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    if(databaseHandler.orderFromSupplier(book.getIsbn(), Integer.parseInt(orderQuantity.getText()))) {
+                        orderQuantity.setText("");
+                        // Todo
+                    } else {
+                        // Todo
+                    }
+                }
+            });
+            Button editBtn = new Button("Edit");
+            editBtn.setPrefWidth(50);
+            editBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    // Todo
+                }
+            });
+            Button deleteBtn = new Button("Delete");
+            deleteBtn.setPrefWidth(70);
+            deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    // Todo
+                }
+            });
+
+            hBox.getChildren().add(isbnLabel);
+            hBox.getChildren().add(titleLabel);
+            hBox.getChildren().add(categoryLabel);
+            hBox.getChildren().add(priceLabel);
+            hBox.getChildren().add(publiserLabel);
+            hBox.getChildren().add(buyingQuantity);
+            hBox.getChildren().add(buyBtn);
+            hBox.getChildren().add(orderQuantity);
+            hBox.getChildren().add(orderBtn);
+            hBox.getChildren().add(editBtn);
+            hBox.getChildren().add(deleteBtn);
+
+            resultsVBox.getChildren().add(hBox);
         }
     }
 
@@ -107,6 +185,47 @@ public class SearchForBooks implements Initializable {
         List<Publisher> publishers = databaseHandler.getPublishers();
         ArrayList<String> publishersNames = getPublishersNames(publishers);
         publisherChioceBox.setItems(FXCollections.observableArrayList(publishersNames));
+        HBox hBox = new HBox();
+        hBox.setPrefHeight(25);
+        Label isbnLabel = new Label("ISBN");
+        isbnLabel.setAlignment(Pos.CENTER);
+        isbnLabel.setPrefWidth(100);
+        Label titleLabel = new Label("Title");
+        titleLabel.setAlignment(Pos.CENTER);
+        titleLabel.setPrefWidth(100);
+        Label categoryLabel = new Label("Category");
+        categoryLabel.setAlignment(Pos.CENTER);
+        categoryLabel.setPrefWidth(100);
+        Label priceLabel = new Label("Price");
+        priceLabel.setAlignment(Pos.CENTER);
+        priceLabel.setPrefWidth(100);
+        Label publiserLabel = new Label("Publisher");
+        publiserLabel.setAlignment(Pos.CENTER);
+        publiserLabel.setPrefWidth(100);
+        Label buyLabel = new Label("Add to Cart");
+        buyLabel.setAlignment(Pos.CENTER);
+        buyLabel.setPrefWidth(100);
+        Label orderLabel = new Label("Order From Supplier");
+        orderLabel.setAlignment(Pos.CENTER);
+        orderLabel.setPrefWidth(150);
+        Label editLabel = new Label("Edit");
+        editLabel.setAlignment(Pos.CENTER);
+        editLabel.setPrefWidth(50);
+        Label deleteLabel = new Label("Delete");
+        deleteLabel.setAlignment(Pos.CENTER);
+        deleteLabel.setPrefWidth(70);
+
+        hBox.getChildren().add(isbnLabel);
+        hBox.getChildren().add(titleLabel);
+        hBox.getChildren().add(categoryLabel);
+        hBox.getChildren().add(priceLabel);
+        hBox.getChildren().add(publiserLabel);
+        hBox.getChildren().add(buyLabel);
+        hBox.getChildren().add(orderLabel);
+        hBox.getChildren().add(editLabel);
+        hBox.getChildren().add(deleteLabel);
+
+        resultsVBox.getChildren().add(hBox);
     }
 
     private ArrayList<String> getPublishersNames(List<Publisher> publishers) {
@@ -116,5 +235,20 @@ public class SearchForBooks implements Initializable {
             publishersNames.add(publisher.getPublisherName());
         }
         return publishersNames;
+    }
+
+    public void minPriceChkChanged(ActionEvent actionEvent) {
+        checkBoxChanged(minPriceTxtField);
+    }
+
+    public void maxPriceChkChanged(ActionEvent actionEvent) {
+        checkBoxChanged(maxPriceTxtField);
+    }
+
+    public void checkOutClk(ActionEvent actionEvent) {
+    }
+
+    public void backClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openControlPanelScreen();
     }
 }
