@@ -24,9 +24,11 @@ public interface DatabaseHandler {
 
     boolean promoteUser(String username);
 
-    List<User> getTop5Customers();
+    int getprevMonthSales();
 
-    List<Book> viewTopSellingBooks();
+    List<String> getTop5Customers();
+
+    List<String> viewTopSellingBooks();
 
     List<Book> findBook(BookDAO book);
 

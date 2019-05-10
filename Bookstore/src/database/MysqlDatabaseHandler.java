@@ -7,7 +7,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import sun.rmi.runtime.Log;
 
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class MysqlDatabaseHandler implements DatabaseHandler {
     private SessionFactory factory;
@@ -189,13 +193,47 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public List<User> getTop5Customers() {
-        return null;
+    public int getprevMonthSales() {
+        Session session=factory.getCurrentSession();
+        session.beginTransaction();
+        StoredProcedureQuery query=session.createStoredProcedureQuery("get_total_sales");
+        query.registerStoredProcedureParameter("sales",Integer.class, ParameterMode.OUT);
+        query.execute();
+        if(query.getOutputParameterValue("sales")==null)
+            return 0;
+        int sales =(int)query.getOutputParameterValue("sales");
+        session.getTransaction().commit();
+        return sales;
+
+
     }
 
     @Override
-    public List<Book> viewTopSellingBooks() {
-        return null;
+    public List<String> getTop5Customers() {
+        Session session=factory.getCurrentSession();
+        session.beginTransaction();
+        StoredProcedureQuery query=session.createStoredProcedureQuery("get_top_users");
+        query.execute();
+        if(query.getResultList()==null)
+            return new ArrayList<>();
+        List<String> users =(List<String>) query.getResultList();
+        session.getTransaction().commit();
+        return users;
+    }
+
+    @Override
+    public List<String> viewTopSellingBooks() {
+        Session session=factory.getCurrentSession();
+        session.beginTransaction();
+        StoredProcedureQuery query=session.createStoredProcedureQuery("get_top_books");
+        query.execute();
+        if(query.getResultList()==null)
+            return new ArrayList<>();
+        List<String> books =(List<String>) query.getResultList();
+        session.getTransaction().commit();
+        return books;
+
+
     }
 
     @Override
