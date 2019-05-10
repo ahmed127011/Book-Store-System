@@ -8,9 +8,16 @@ public class LoggedUser {
 
     private static LoggedUser userInstance;
 
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    private boolean isLoggedIn = false;
+
     private LoggedUser() {
         this.user = new User();
         this.cart = new ShoppingCart();
+        this.isLoggedIn = false;
     }
 
     public static LoggedUser getInstance() {
@@ -18,6 +25,10 @@ public class LoggedUser {
             userInstance = new LoggedUser();
         }
         return userInstance;
+    }
+
+    public void setLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
     }
 
     public void setUser(User user) {
@@ -38,5 +49,6 @@ public class LoggedUser {
 
     public void logOut() {
         userInstance = null;
+        isLoggedIn = false;
     }
 }
