@@ -5,6 +5,7 @@ import models.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import java.util.ArrayList;
@@ -229,15 +230,22 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     @Override
     public List<Book> findBook(BookDAO bookData) {
         Session session = factory.getCurrentSession();
-        StringBuilder query = new StringBuilder("From Book b where");
+        List<Book> books;
+        boolean where=false;
+        StringBuilder query = new StringBuilder("From Book b");
         boolean flag = false;
         if (bookData.getIsbn() != null) {
+            query.append(" where ");
+            where=true;
             query.append(" b.isbn like '");
             query.append(bookData.getIsbn());
             query.append("%'");
             flag = true;
         }
         if (bookData.getTitle() != null) {
+            if(!where)
+                query.append(" where ");
+            where=true;
             if (flag)
                 query.append(" and ");
             query.append(" b.title like '");
@@ -246,6 +254,9 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
             flag = true;
         }
         if (bookData.getLowerPrice() != 0) {
+            if(!where)
+                query.append(" where ");
+            where=true;
             if (flag)
                 query.append(" and ");
             query.append(" b.price >= ");
@@ -253,6 +264,9 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
             flag = true;
         }
         if (bookData.getUpperPrice() != 0) {
+            if(!where)
+                query.append(" where ");
+            where=true;
             if (flag)
                 query.append(" and ");
             query.append(" b.price <= ");
@@ -260,6 +274,9 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
             flag = true;
         }
         if (bookData.getPublisher() != null) {
+            if(!where)
+                query.append(" where ");
+            where=true;
             if (flag)
                 query.append(" and ");
             query.append(" b.publisherName = '");
@@ -269,6 +286,8 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
         }
         if (bookData.getCategories() != null) {
+            if(!where)
+                query.append(" where ");
             if (flag)
                 query.append(" and ");
             query.append(" b.categoryName in (");
@@ -288,17 +307,40 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         System.out.println(query.toString());
         session.beginTransaction();
         try {
-            List<?> books = session.createQuery(query.toString()).getResultList();
+            books = session.createQuery(query.toString()).getResultList();
             session.getTransaction().commit();
-            if(books==null) return new LinkedList<>();
-            return (List<Book>) books;
         } catch (Exception e) {
             session.getTransaction().rollback();
             e.printStackTrace();
             return null;
         }
+        if (books == null) return new LinkedList<>();
+        if (bookData.getAuthor() != null) {
+            List<Book> removed = new ArrayList<Book>();
+            for (Book b : books) {
+                if (!isAuthor(b, bookData.getAuthor()))
+                    removed.add(b);
+            }
+            books.removeAll(removed);
+        }
 
+        return books;
 
+    }
+
+    private boolean isAuthor(Book b, String author) {
+        Session session = factory.getCurrentSession();
+        String query ="From BookAuthors b where b.pk.isbn= '"+b.getIsbn()+"' and b.pk.authorName= '"+author+"'";
+        session.beginTransaction();
+        try {
+            List<?> authors = session.createQuery(query).getResultList();
+            session.getTransaction().commit();
+            return authors != null&&authors.size()!=0;
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -329,7 +371,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public boolean Checkout( String creditCardNum, java.sql.Date expirationDate) {
+    public boolean Checkout(String creditCardNum, java.sql.Date expirationDate) {
         ShoppingCart cart = LoggedUser.getInstance().getCart();
         Session session = factory.getCurrentSession();
         session.beginTransaction();
@@ -378,10 +420,9 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         session.beginTransaction();
         try {
             List<?> categories = session.createQuery(query).getResultList();
-            List<String> result=new LinkedList<>();
+            List<String> result = new LinkedList<>();
             session.getTransaction().commit();
-            for(Category c:(List<Category>)categories)
-            {
+            for (Category c : (List<Category>) categories) {
                 result.add(c.getCategoryName());
             }
             return result;
@@ -410,9 +451,8 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean addNewPublisher(Publisher publisher) {
-    return add(publisher);
+        return add(publisher);
     }
-
 
 
     @Override
@@ -422,28 +462,42 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public boolean addPublisherAddresses(Publisher publisher, List<String> addresses) {
-        boolean res=true;
-        for(String address:addresses)
-        {
-            res&=add(new PublisherAddresses(publisher.getPublisherName(),address));
-            if(!res) return false;
+        boolean res = true;
+        for (String address : addresses) {
+            res &= add(new PublisherAddresses(publisher.getPublisherName(), address));
+            if (!res) return false;
         }
         return true;
     }
 
     @Override
     public boolean addPublisherPhones(Publisher publisher, List<String> phones) {
-        boolean res=true;
-        for(String phone:phones)
-        {
-            res&=add(new PublisherPhones(publisher.getPublisherName(),phone));
-            if(!res) return false;
+        boolean res = true;
+        for (String phone : phones) {
+            res &= add(new PublisherPhones(publisher.getPublisherName(), phone));
+            if (!res) return false;
         }
         return true;
     }
 
+    @Override
+    public boolean removeBook(Book book) {
+        Session session=factory.getCurrentSession();
+        session.beginTransaction();
+        session.remove(book);
+        try{
+            session.getTransaction().commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            session.getTransaction().rollback();
+            return false;
+        }
+        return true;
 
-    private boolean add(Object o ){
+    }
+
+
+    private boolean add(Object o) {
         User user = LoggedUser.getInstance().getUser();
         if (!user.getIsManger())
             return false;
@@ -458,7 +512,6 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         }
         return true;
     }
-
 
 
 }
