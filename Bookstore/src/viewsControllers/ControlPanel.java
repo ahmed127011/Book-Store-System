@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import models.LoggedUser;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -27,16 +28,17 @@ public class ControlPanel implements Initializable {
         // Todo : open search for books
     }
 
-    public void addBookClk(ActionEvent actionEvent) {
-        // Todo : open add book
+    public void addBookClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openAddBookScreen();
     }
 
-    public void logoutClk(ActionEvent actionEvent) {
+    public void logoutClk(ActionEvent actionEvent) throws IOException {
         LoggedUser.getInstance().logOut();
         ViewsController.getInstance().openLoginScreen();
     }
 
-    public void editProfileClk(ActionEvent actionEvent) {
+    public void editProfileClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openSignUpScreen();
     }
 
     public void promoteUserClk(ActionEvent actionEvent) {

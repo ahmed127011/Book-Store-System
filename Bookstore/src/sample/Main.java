@@ -19,7 +19,7 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Library Management System");
         ViewsController.getInstance();
         ViewsController.getInstance().setPrimaryStage(primaryStage);
