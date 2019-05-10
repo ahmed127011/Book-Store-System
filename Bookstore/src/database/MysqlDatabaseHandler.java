@@ -9,6 +9,7 @@ import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MysqlDatabaseHandler implements DatabaseHandler {
@@ -315,7 +316,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     @Override
     public void addToShoppingCard(String isbn, int quantity) {
         User user = LoggedUser.getInstance().getUser();
-        UserOrders order = new UserOrders(isbn, user.getUserName(), quantity);
+        UserOrders order = new UserOrders(isbn, user.getUserName(), quantity, "", null);
         ShoppingCart cart = LoggedUser.getInstance().getCart();
         cart.addOrder(order);
     }
@@ -340,13 +341,16 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public boolean Checkout() {
+    public boolean Checkout( String creditCardNum, java.sql.Date expirationDate) {
         ShoppingCart cart = LoggedUser.getInstance().getCart();
         Session session = factory.getCurrentSession();
         session.beginTransaction();
         for (UserOrders order : cart.getOrders()) {
             java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
             order.setCheckOutDate(date);
+            order.setCreditCardNum(creditCardNum);
+            order.setExpirationDate(expirationDate);
+            //TODO check credit card validity
             session.save(order);
         }
         try {
@@ -383,8 +387,13 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         session.beginTransaction();
         try {
             List<?> categories = session.createQuery(query).getResultList();
+            List<String> result=new LinkedList<>();
             session.getTransaction().commit();
-            return (List<String>) categories;
+            for(Category c:(List<Category>)categories)
+            {
+                result.add(c.getCategoryName());
+            }
+            return result;
         } catch (Exception e) {
             session.getTransaction().rollback();
             e.printStackTrace();
