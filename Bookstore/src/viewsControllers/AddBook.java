@@ -1,40 +1,46 @@
 package viewsControllers;
 
+import database.DatabaseHandler;
+import database.MysqlDatabaseHandler;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import models.Book;
+import models.BookAuthors;
+import models.Publisher;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddBook implements Initializable {
 
     @FXML
+    private DatePicker publicationDatePicker;
+    @FXML
+    private TextField quantityTxtField;
+    @FXML
+    private TextField defOrderQuantityTxtField;
+    @FXML
+    private TextField minQuantityTxtField;
+    @FXML
     private TextField isbnTxtField;
-
     @FXML
     private TextField titleTxtField;
-
     @FXML
     private ChoiceBox publisherChoiceBox;
-
     @FXML
     private ChoiceBox categoryChoiceBox;
-
     @FXML
     private TextField priceTxtField;
-
-    @FXML
-    private TextField addressTxtField;
-
     @FXML
     private VBox authorsVBox;
 
@@ -46,6 +52,20 @@ public class AddBook implements Initializable {
 
     public void onSceneShow(Book chosenBook) {
         this.chosenBook = chosenBook;
+        DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
+        categoryChoiceBox.setItems(FXCollections.observableArrayList(databaseHandler.getCategories()));
+        List<Publisher> publishers = databaseHandler.getPublishers();
+        ArrayList<String> publishersNames = getPublishersNames(publishers);
+        publisherChoiceBox.setItems(FXCollections.observableArrayList(publishersNames));
+    }
+
+    private ArrayList<String> getPublishersNames(List<Publisher> publishers) {
+        ArrayList<String> publishersNames = new ArrayList<>();
+        for (Publisher publisher :
+                publishers) {
+            publishersNames.add(publisher.getPublisherName());
+        }
+        return publishersNames;
     }
 
     public void backClk(ActionEvent actionEvent) throws IOException {
@@ -53,7 +73,44 @@ public class AddBook implements Initializable {
     }
 
     public void submitClk(ActionEvent actionEvent) {
-
+        String isbn = isbnTxtField.getText();
+        String title = titleTxtField.getText();
+        String price = priceTxtField.getText();
+        Date publicationDate = Date.valueOf(publicationDatePicker.getValue());
+        String publisherName = publisherChoiceBox.getValue().toString();
+        String categoryName = categoryChoiceBox.getValue().toString();
+        Long minQuantity = Long.valueOf(minQuantityTxtField.getText());
+        Long quantity = Long.valueOf(quantityTxtField.getText());
+        Long orderQuantity = Long.valueOf(defOrderQuantityTxtField.getText());
+        DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
+        Book newBook = new Book(isbn, title);
+        newBook.setPrice(Long.valueOf(price));
+        newBook.setPublisherName(publisherName);
+        newBook.setCategoryName(categoryName);
+        newBook.setPublicationDate(publicationDate);
+        newBook.setQuantity(quantity);
+        newBook.setThreshold(orderQuantity);
+        newBook.setRequiredQuantity(minQuantity);
+        Boolean added = databaseHandler.addNewBook(newBook);
+        for (Node children: authorsVBox.getChildren()) {
+            String authorName = ((TextField)(((HBox)children).getChildren().get(0))).getText();
+            added = added && databaseHandler.addNewAuthor(new BookAuthors(isbn,authorName));
+        }
+        if(added) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Added The Book");
+            alert.setHeaderText(null);
+            alert.setOnCloseRequest(dialogEvent -> {
+                try {
+                    ViewsController.getInstance().openControlPanelScreen();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            alert.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error While adding the book");
+            alert.show();
+        }
     }
 
     public void addAuthorClk(ActionEvent actionEvent) {
