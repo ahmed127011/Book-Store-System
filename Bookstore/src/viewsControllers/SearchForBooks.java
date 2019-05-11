@@ -10,10 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import models.Book;
-import models.BookDAO;
-import models.LoggedUser;
-import models.Publisher;
+import models.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -256,11 +253,16 @@ public class SearchForBooks implements Initializable {
         checkBoxChanged(maxPriceTxtField);
     }
 
-    public void checkOutClk(ActionEvent actionEvent) throws IOException {
-        ViewsController.getInstance().openCheckOutScreen();
+    public void shppingCartClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openShoppingCartScreen();
     }
 
     public void backClk(ActionEvent actionEvent) throws IOException {
-        ViewsController.getInstance().openControlPanelScreen();
+        User curUser = LoggedUser.getInstance().getUser();
+        if(curUser.getIsManger()) {
+            ViewsController.getInstance().openControlPanelScreen();
+        } else {
+            ViewsController.getInstance().openUserHomeScreen();
+        }
     }
 }

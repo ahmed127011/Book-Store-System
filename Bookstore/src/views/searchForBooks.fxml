@@ -72,7 +72,7 @@
    <TextField fx:id="minPriceTxtField" disable="true" layoutX="40.0" layoutY="186.0" />
    <CheckBox layoutX="240.0" layoutY="161.0" mnemonicParsing="false" onAction="#maxPriceChkChanged" text="Max Price" />
    <TextField fx:id="maxPriceTxtField" disable="true" layoutX="240.0" layoutY="186.0" />
-   <Button layoutX="695.0" layoutY="573.0" mnemonicParsing="false" onAction="#checkOutClk" text="Check Out" />
+   <Button layoutX="695.0" layoutY="573.0" mnemonicParsing="false" onAction="#shppingCartClk" text="Shopping Cart" />
    <Button layoutX="62.0" layoutY="573.0" mnemonicParsing="false" onAction="#backClk" text="Back" />
     
 

@@ -34,6 +34,7 @@ public class ViewsController {
     private Scene checOutScene;
     private Scene userHomeScene;
     private Scene confirmOrdersScene;
+    private Scene shoppingCartScene;
 
     private URL loginScreenUrl;
     private URL signUpScreenUrl;
@@ -44,6 +45,7 @@ public class ViewsController {
     private URL checOutScreenUrl;
     private URL userHomeScreenUrl;
     private URL confirmOrdersScreenUrl;
+    private URL shoppingCartScreenUrl;
 
     private Parent controlPanelScreenParent;
     private Parent signUpScreenParent;
@@ -54,11 +56,18 @@ public class ViewsController {
     private Parent checOutScreenParent;
     private Parent userHomeScreenParent;
     private Parent confirmOrdersScreenParent;
+    private Parent shoppingCartScreenParent;
 
     private SignUp signUpController;
     private AddBook addBookController;
     private SearchForBooks searchForBooksController;
     private ConfirmOrders confirmOrdersController;
+
+    public void setShoppingCartController(ShoppingCart shoppingCartController) {
+        this.shoppingCartController = shoppingCartController;
+    }
+
+    private ShoppingCart shoppingCartController;
 
     public void setConfirmOrdersController(ConfirmOrders confirmOrdersController) {
         this.confirmOrdersController = confirmOrdersController;
@@ -103,6 +112,9 @@ public class ViewsController {
 
         File confirmOrdersScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/confirmOrders.fxml");
         confirmOrdersScreenUrl = confirmOrdersScreenFile.toURI().toURL();
+
+        File shoppingCartScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/shoppingCart.fxml");
+        shoppingCartScreenUrl = shoppingCartScreenFile.toURI().toURL();
     }
 
     public void openLoginScreen() throws IOException {
@@ -120,6 +132,15 @@ public class ViewsController {
         }
         confirmOrdersController.onSceneShow();
         primaryStage.setScene(confirmOrdersScene);
+    }
+
+    public void openShoppingCartScreen() throws IOException {
+        if(shoppingCartScreenParent == null) {
+            shoppingCartScreenParent = FXMLLoader.load(shoppingCartScreenUrl);
+            shoppingCartScene = new Scene(shoppingCartScreenParent);
+        }
+        shoppingCartController.onSceneShow();
+        primaryStage.setScene(shoppingCartScene);
     }
 
     public void openUserHomeScreen() throws IOException {
