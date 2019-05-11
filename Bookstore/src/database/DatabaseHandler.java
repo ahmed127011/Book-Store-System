@@ -38,7 +38,7 @@ public interface DatabaseHandler {
 
     boolean removeFromShoppingCard(String isbn);
 
-    boolean Checkout(String creditCardNum, java.sql.Date expirationDate);
+    boolean checkout(String creditCardNum, java.sql.Date expirationDate);
 
     List<LibraryOrders> getOrders();
 

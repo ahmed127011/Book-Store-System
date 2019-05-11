@@ -371,7 +371,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public boolean Checkout(String creditCardNum, java.sql.Date expirationDate) {
+    public boolean checkout(String creditCardNum, java.sql.Date expirationDate) {
         ShoppingCart cart = LoggedUser.getInstance().getCart();
         Session session = factory.getCurrentSession();
         session.beginTransaction();

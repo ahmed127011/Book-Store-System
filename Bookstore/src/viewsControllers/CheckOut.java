@@ -24,7 +24,9 @@ public class CheckOut implements Initializable {
 
     public void submitClk(ActionEvent actionEvent) {
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
-        if (databaseHandler.Checkout(cardNumberTxtField.getText(), Date.valueOf(expireDatePicker.getValue()))) {
+        boolean checkedout = databaseHandler.checkout(cardNumberTxtField.getText(), Date.valueOf(expireDatePicker.getValue()));
+        System.out.println(checkedout);
+        if (checkedout) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Checked out ");
             alert.setHeaderText(null);
             alert.show();

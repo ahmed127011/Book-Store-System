@@ -70,7 +70,14 @@ public class SignUp implements Initializable {
     }
 
     public void backClk(ActionEvent actionEvent) throws IOException {
-        ViewsController.getInstance().openLoginScreen();
+        User curUser = LoggedUser.getInstance().getUser();
+        if(!LoggedUser.getInstance().isLoggedIn()) { // Not logged in : Sign Up
+            ViewsController.getInstance().openLoginScreen();
+        } else if (curUser.getIsManger()){
+            ViewsController.getInstance().openControlPanelScreen();
+        } else {
+            ViewsController.getInstance().openUserHomeScreen();
+        }
     }
 
     public void submitClk(ActionEvent actionEvent) {

@@ -45,7 +45,11 @@ public class Login implements Initializable {
                             e.printStackTrace();
                         }
                     } else  {
-                        // Todo : go to user Home page
+                        try {
+                            ViewsController.getInstance().openUserHomeScreen();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
