@@ -82,6 +82,8 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
 
     @Override
     public void logout() {
+        Session session = factory.getCurrentSession();
+        session.close();
         LoggedUser.getInstance().logOut();
     }
 
