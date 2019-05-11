@@ -36,7 +36,7 @@ public class ConfirmOrders implements Initializable {
         HBox titleHBox = new HBox();
         titleHBox.setPrefHeight(25);
         titleHBox.getChildren().add(getLabel("ISBN",150.0));
-        titleHBox.getChildren().add(getLabel("Order Date",150.0));
+        //titleHBox.getChildren().add(getLabel("Order Date",150.0));
         titleHBox.getChildren().add(getLabel("Quantity",150.0));
         titleHBox.getChildren().add(getLabel("Confirm",150.0));
 
@@ -46,7 +46,6 @@ public class ConfirmOrders implements Initializable {
             HBox orderHBox = new HBox();
             orderHBox.getChildren().add(getLabel(order.getIsbn(),150.0));
             //orderHBox.getChildren().add(getLabel(order.getOrderedDate().toString(),150.0));
-            orderHBox.getChildren().add(getLabel(String.valueOf(order.getQuantity()),150.0));
             orderHBox.getChildren().add(getLabel(String.valueOf(order.getQuantity()),150.0));
             Button confirmBtn = new Button("Confirm");
             confirmBtn.setPrefWidth(150);
