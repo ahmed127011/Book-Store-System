@@ -25,6 +25,7 @@ public class Main extends Application {
         ViewsController.getInstance().setPrimaryStage(primaryStage);
         ViewsController.getInstance().openLoginScreen();
         primaryStage.show();
+        MysqlDatabaseHandler.getInstance();
     }
 
 

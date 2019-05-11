@@ -26,9 +26,9 @@ public interface DatabaseHandler {
 
     int getprevMonthSales();
 
-    List<String> getTop5Customers();
+    String getTop5Customers();
 
-    List<String> viewTopSellingBooks();
+    String viewTopSellingBooks();
 
     List<Book> findBook(BookDAO book);
 
