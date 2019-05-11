@@ -200,31 +200,41 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
     }
 
     @Override
-    public List<String> getTop5Customers() {
+    public String getTop5Customers() {
         Session session = factory.getCurrentSession();
         session.beginTransaction();
         StoredProcedureQuery query = session.createStoredProcedureQuery("get_top_users");
         query.execute();
         if (query.getResultList() == null)
-            return new ArrayList<>();
+            return "";
         List<String> users = (List<String>) query.getResultList();
         session.getTransaction().commit();
-        return users;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 1; i <= users.size(); i++) {
+            stringBuilder.append(i + ". ");
+            stringBuilder.append(users.get(i));
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     @Override
-    public List<String> viewTopSellingBooks() {
+    public String viewTopSellingBooks() {
         Session session = factory.getCurrentSession();
         session.beginTransaction();
         StoredProcedureQuery query = session.createStoredProcedureQuery("get_top_books");
         query.execute();
         if (query.getResultList() == null)
-            return new ArrayList<>();
+            return "";
         List<String> books = (List<String>) query.getResultList();
         session.getTransaction().commit();
-        return books;
-
-
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 1; i <= books.size(); i++) {
+            stringBuilder.append(i + ". ");
+            stringBuilder.append(books.get(i));
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     @Override
@@ -384,6 +394,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
                 session.save(order);
             } else {
                 System.out.println("Invalid Credit Card info.");
+                return false;
             }
         }
         try {
