@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import models.Book;
 import models.BookDAO;
+import models.LoggedUser;
 import models.Publisher;
 
 import java.io.IOException;
@@ -114,6 +115,7 @@ public class SearchForBooks implements Initializable {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     databaseHandler.addToShoppingCard(book.getIsbn(), Integer.parseInt(buyingQuantity.getText()));
+                    buyingQuantity.setText("");
                 }
             });
             TextField orderQuantity = new TextField();
@@ -126,9 +128,13 @@ public class SearchForBooks implements Initializable {
                 public void handle(ActionEvent actionEvent) {
                     if(databaseHandler.orderFromSupplier(book.getIsbn(), Integer.parseInt(orderQuantity.getText()))) {
                         orderQuantity.setText("");
-                        // Todo
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully added to car ");
+                        alert.setHeaderText(null);
+                        alert.show();
                     } else {
-                        // Todo
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Error While adding to cart ");
+                        alert.setHeaderText(null);
+                        alert.show();
                     }
                 }
             });
@@ -157,10 +163,12 @@ public class SearchForBooks implements Initializable {
             hBox.getChildren().add(publiserLabel);
             hBox.getChildren().add(buyingQuantity);
             hBox.getChildren().add(buyBtn);
-            hBox.getChildren().add(orderQuantity);
-            hBox.getChildren().add(orderBtn);
-            hBox.getChildren().add(editBtn);
-            hBox.getChildren().add(deleteBtn);
+            if(LoggedUser.getInstance().getUser().getIsManger()) {
+                hBox.getChildren().add(orderQuantity);
+                hBox.getChildren().add(orderBtn);
+                hBox.getChildren().add(editBtn);
+                hBox.getChildren().add(deleteBtn);
+            }
 
             resultsVBox.getChildren().add(hBox);
         }
@@ -182,6 +190,7 @@ public class SearchForBooks implements Initializable {
     }
 
     public void onSceneShow() {
+        resultsVBox.getChildren().clear();
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         List<Publisher> publishers = databaseHandler.getPublishers();
         ArrayList<String> publishersNames = getPublishersNames(publishers);
@@ -222,10 +231,11 @@ public class SearchForBooks implements Initializable {
         hBox.getChildren().add(priceLabel);
         hBox.getChildren().add(publiserLabel);
         hBox.getChildren().add(buyLabel);
-        hBox.getChildren().add(orderLabel);
-        hBox.getChildren().add(editLabel);
-        hBox.getChildren().add(deleteLabel);
-
+        if(LoggedUser.getInstance().getUser().getIsManger()) {
+            hBox.getChildren().add(orderLabel);
+            hBox.getChildren().add(editLabel);
+            hBox.getChildren().add(deleteLabel);
+        }
         resultsVBox.getChildren().add(hBox);
     }
 
@@ -246,7 +256,8 @@ public class SearchForBooks implements Initializable {
         checkBoxChanged(maxPriceTxtField);
     }
 
-    public void checkOutClk(ActionEvent actionEvent) {
+    public void checkOutClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openCheckOutScreen();
     }
 
     public void backClk(ActionEvent actionEvent) throws IOException {

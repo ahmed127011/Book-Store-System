@@ -31,6 +31,7 @@ public class ViewsController {
     private Scene addBookScene;
     private Scene addPublisherScene;
     private Scene searchForBooksScene;
+    private Scene checOutScene;
 
     private URL loginScreenUrl;
     private URL signUpScreenUrl;
@@ -38,6 +39,7 @@ public class ViewsController {
     private URL addBookPanelScreenUrl;
     private URL addPublisherScreenUrl;
     private URL searchForBooksScreenUrl;
+    private URL checOutScreenUrl;
 
     private Parent controlPanelScreenParent;
     private Parent signUpScreenParent;
@@ -45,6 +47,7 @@ public class ViewsController {
     private Parent addBookScreenParent;
     private Parent addPublisherScreenParent;
     private Parent searchForBooksScreenParent;
+    private Parent checOutScreenParent;
 
     private SignUp signUpController;
     private AddBook addBookController;
@@ -80,6 +83,9 @@ public class ViewsController {
 
         File searchForBooksScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/searchForBooks.fxml");
         searchForBooksScreenUrl = searchForBooksScreenFile.toURI().toURL();
+
+        File checkOutScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/checkOut.fxml");
+        checOutScreenUrl = checkOutScreenFile.toURI().toURL();
     }
 
     public void openLoginScreen() throws IOException {
@@ -88,6 +94,14 @@ public class ViewsController {
             loginScreenScene = new Scene(loginScreenParent);
         }
         primaryStage.setScene(loginScreenScene);
+    }
+
+    public void openCheckOutScreen() throws IOException {
+        if(checOutScreenParent == null) {
+            checOutScreenParent = FXMLLoader.load(checOutScreenUrl);
+            checOutScene = new Scene(checOutScreenParent);
+        }
+        primaryStage.setScene(checOutScene);
     }
 
     public void openSignUpScreen() throws IOException {
