@@ -33,6 +33,7 @@ public class ViewsController {
     private Scene searchForBooksScene;
     private Scene checOutScene;
     private Scene userHomeScene;
+    private Scene confirmOrdersScene;
 
     private URL loginScreenUrl;
     private URL signUpScreenUrl;
@@ -42,6 +43,7 @@ public class ViewsController {
     private URL searchForBooksScreenUrl;
     private URL checOutScreenUrl;
     private URL userHomeScreenUrl;
+    private URL confirmOrdersScreenUrl;
 
     private Parent controlPanelScreenParent;
     private Parent signUpScreenParent;
@@ -51,10 +53,16 @@ public class ViewsController {
     private Parent searchForBooksScreenParent;
     private Parent checOutScreenParent;
     private Parent userHomeScreenParent;
+    private Parent confirmOrdersScreenParent;
 
     private SignUp signUpController;
     private AddBook addBookController;
     private SearchForBooks searchForBooksController;
+    private ConfirmOrders confirmOrdersController;
+
+    public void setConfirmOrdersController(ConfirmOrders confirmOrdersController) {
+        this.confirmOrdersController = confirmOrdersController;
+    }
 
     public void setAddBookController(AddBook addBookController) {
         this.addBookController = addBookController;
@@ -92,6 +100,9 @@ public class ViewsController {
 
         File userHomeScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/userHome.fxml");
         userHomeScreenUrl = userHomeScreenFile.toURI().toURL();
+
+        File confirmOrdersScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/confirmOrders.fxml");
+        confirmOrdersScreenUrl = confirmOrdersScreenFile.toURI().toURL();
     }
 
     public void openLoginScreen() throws IOException {
@@ -100,6 +111,15 @@ public class ViewsController {
             loginScreenScene = new Scene(loginScreenParent);
         }
         primaryStage.setScene(loginScreenScene);
+    }
+
+    public void openConfirmOrdersScreen() throws IOException {
+        if(confirmOrdersScreenParent == null) {
+            confirmOrdersScreenParent = FXMLLoader.load(confirmOrdersScreenUrl);
+            confirmOrdersScene = new Scene(confirmOrdersScreenParent);
+        }
+        confirmOrdersController.onSceneShow();
+        primaryStage.setScene(confirmOrdersScene);
     }
 
     public void openUserHomeScreen() throws IOException {

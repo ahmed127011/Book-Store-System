@@ -62,8 +62,8 @@ public class ControlPanel implements Initializable {
         }
     }
 
-    public void confirmOrderClk(ActionEvent actionEvent) {
-
+    public void confirmOrderClk(ActionEvent actionEvent) throws IOException {
+        ViewsController.getInstance().openConfirmOrdersScreen();
     }
 
     public void addPublisherClk(ActionEvent actionEvent) throws IOException {

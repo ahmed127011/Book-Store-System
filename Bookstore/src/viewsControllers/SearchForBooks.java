@@ -128,11 +128,11 @@ public class SearchForBooks implements Initializable {
                 public void handle(ActionEvent actionEvent) {
                     if(databaseHandler.orderFromSupplier(book.getIsbn(), Integer.parseInt(orderQuantity.getText()))) {
                         orderQuantity.setText("");
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully added to car ");
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Ordered ");
                         alert.setHeaderText(null);
                         alert.show();
                     } else {
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "Error While adding to cart ");
+                        Alert alert = new Alert(Alert.AlertType.ERROR, "Error While Ordering ");
                         alert.setHeaderText(null);
                         alert.show();
                     }
