@@ -4,6 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import models.Book;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -182,6 +184,15 @@ public class ViewsController {
             addBookScene = new Scene(addBookScreenParent);
         }
         addBookController.onSceneShow(null);
+        primaryStage.setScene(addBookScene);
+    }
+
+    public void openEditBookScreen(Book book) throws IOException {
+        if(addBookScreenParent == null) {
+            addBookScreenParent = FXMLLoader.load(addBookPanelScreenUrl);
+            addBookScene = new Scene(addBookScreenParent);
+        }
+        addBookController.onSceneShow(book);
         primaryStage.setScene(addBookScene);
     }
 

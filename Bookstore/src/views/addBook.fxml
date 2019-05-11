@@ -44,7 +44,7 @@
        <Label layoutX="69.0" layoutY="372.0" text="Publisher" />
        <ChoiceBox fx:id="publisherChoiceBox" layoutX="197.0" layoutY="367.0" prefHeight="26.0" prefWidth="171.0" />
 
-       <Label layoutX="439.0" layoutY="122.0" text="Publication Year" />
+       <Label layoutX="439.0" layoutY="122.0" text="Publication Date" />
        <DatePicker fx:id="publicationDatePicker" layoutX="605.0" layoutY="113.0" />
 
        <Label layoutX="439.0" layoutY="172.0" text="Selling Price" />
