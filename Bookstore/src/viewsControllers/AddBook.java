@@ -109,35 +109,64 @@ public class AddBook implements Initializable {
         Long minQuantity = Long.valueOf(minQuantityTxtField.getText());
         Long quantity = Long.valueOf(quantityTxtField.getText());
         Long orderQuantity = Long.valueOf(defOrderQuantityTxtField.getText());
+
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
-        Book newBook = new Book(isbn, title);
-        newBook.setPrice(Long.valueOf(price));
-        newBook.setPublisherName(publisherName);
-        newBook.setCategoryName(categoryName);
-        newBook.setPublicationDate(publicationDate);
-        newBook.setQuantity(quantity);
-        newBook.setThreshold(orderQuantity);
-        newBook.setRequiredQuantity(minQuantity);
-        Boolean added = databaseHandler.addNewBook(newBook);
-        for (Node children: authorsVBox.getChildren()) {
-            String authorName = ((TextField)(((HBox)children).getChildren().get(0))).getText();
-            added = added && databaseHandler.addNewAuthor(new BookAuthors(isbn,authorName));
+        if(chosenBook == null) { // Add book
+            Book newBook = new Book(isbn, title);
+            newBook.setPrice(Long.valueOf(price));
+            newBook.setPublisherName(publisherName);
+            newBook.setCategoryName(categoryName);
+            newBook.setPublicationDate(publicationDate);
+            newBook.setQuantity(quantity);
+            newBook.setThreshold(orderQuantity);
+            newBook.setRequiredQuantity(minQuantity);
+            Boolean added = databaseHandler.addNewBook(newBook);
+            for (Node children: authorsVBox.getChildren()) {
+                String authorName = ((TextField)(((HBox)children).getChildren().get(0))).getText();
+                added = added && databaseHandler.addNewAuthor(new BookAuthors(isbn,authorName));
+            }
+            if(added) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Added The Book");
+                alert.setHeaderText(null);
+                alert.setOnCloseRequest(dialogEvent -> {
+                    try {
+                        ViewsController.getInstance().openControlPanelScreen();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                alert.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Error While adding the book");
+                alert.show();
+            }
+        } else { // Edit Book
+            chosenBook.setTitle(title);
+            chosenBook.setPrice(Long.valueOf(price));
+            chosenBook.setPublisherName(publisherName);
+            chosenBook.setCategoryName(categoryName);
+            chosenBook.setPublicationDate(publicationDate);
+            chosenBook.setQuantity(quantity);
+            chosenBook.setThreshold(orderQuantity);
+            chosenBook.setRequiredQuantity(minQuantity);
+            Boolean edited = databaseHandler.updateBookData(chosenBook);
+            if(edited) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Edited The Book");
+                alert.setHeaderText(null);
+                alert.setOnCloseRequest(dialogEvent -> {
+                    try {
+                        ViewsController.getInstance().openSearchForBooksScreen();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                alert.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Error While editing the book");
+                alert.show();
+            }
         }
-        if(added) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Added The Book");
-            alert.setHeaderText(null);
-            alert.setOnCloseRequest(dialogEvent -> {
-                try {
-                    ViewsController.getInstance().openControlPanelScreen();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            alert.show();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error While adding the book");
-            alert.show();
-        }
+
     }
 
     public void addAuthorClk(ActionEvent actionEvent) {

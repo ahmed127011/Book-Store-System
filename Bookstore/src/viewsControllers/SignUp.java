@@ -121,16 +121,21 @@ public class SignUp implements Initializable {
             curUser.setFirstName(firstName);
             curUser.setLastName(lastName);
             curUser.setAddress(address);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Edited Your Profile");
-            alert.setHeaderText(null);
-            alert.setOnCloseRequest(dialogEvent -> {
-                try {
-                    ViewsController.getInstance().openControlPanelScreen();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            alert.show();
+            if (databaseHandler.UpdateUserData()) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Edited Your Profile");
+                alert.setHeaderText(null);
+                alert.setOnCloseRequest(dialogEvent -> {
+                    try {
+                        ViewsController.getInstance().openControlPanelScreen();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                alert.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Error While Editing Profile");
+                alert.show();
+            }
         }
     }
 }
