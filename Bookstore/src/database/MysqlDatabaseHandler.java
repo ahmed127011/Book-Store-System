@@ -214,7 +214,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i <= users.size(); i++) {
             stringBuilder.append(i + ". ");
-            stringBuilder.append(users.get(i));
+            stringBuilder.append(users.get(i - 1));
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
@@ -233,7 +233,7 @@ public class MysqlDatabaseHandler implements DatabaseHandler {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i <= books.size(); i++) {
             stringBuilder.append(i + ". ");
-            stringBuilder.append(books.get(i));
+            stringBuilder.append(books.get(i - 1));
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
