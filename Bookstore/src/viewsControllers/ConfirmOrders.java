@@ -43,6 +43,9 @@ public class ConfirmOrders implements Initializable {
         ordersVBox.getChildren().add(titleHBox);
         for (LibraryOrders order :
                 orders) {
+            if (order.getConfirmed()) {
+                continue;
+            }
             HBox orderHBox = new HBox();
             orderHBox.getChildren().add(getLabel(order.getIsbn(),150.0));
             //orderHBox.getChildren().add(getLabel(order.getOrderedDate().toString(),150.0));

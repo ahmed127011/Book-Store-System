@@ -90,11 +90,10 @@ public class UserOrders {
     }
 
     /**
-     * @param creditCardNum
      * @return true it the creditCarNum is valid number, false otherwise.
      */
     public boolean isValidCreditCardNum() {
-        long number = Integer.parseInt(creditCardNum);
+        long number = Long.parseLong(creditCardNum);
         return (getSize(number) >= 13 &&
                 getSize(number) <= 16) &&
                 (prefixMatched(number, 4) ||
