@@ -26,11 +26,6 @@ public class ShoppingCart {
             }
         }
         cart.add(order);
-
-
-
-
-        cart.add(order);
     }
 
     public void removeOrder(UserOrders order) {
