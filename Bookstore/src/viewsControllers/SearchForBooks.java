@@ -80,6 +80,7 @@ public class SearchForBooks implements Initializable {
         bookDAO.setCategories(getChosenCategories());
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         List<Book> books = databaseHandler.findBook(bookDAO);
+        setTitleRow();
         addBooksToResult(books);
     }
 
@@ -140,7 +141,11 @@ public class SearchForBooks implements Initializable {
             editBtn.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    // Todo
+                    try {
+                        ViewsController.getInstance().openEditBookScreen(book);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             Button deleteBtn = new Button("Delete");
@@ -187,11 +192,23 @@ public class SearchForBooks implements Initializable {
     }
 
     public void onSceneShow() {
-        resultsVBox.getChildren().clear();
+        titleTxtField.setText("");
+        isbnTxtField.setText("");
+        authorTxtField.setText("");
+        publisherChioceBox.setValue("");
+        minPriceTxtField.setText("");
+        maxPriceTxtField.setText("");
+
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         List<Publisher> publishers = databaseHandler.getPublishers();
         ArrayList<String> publishersNames = getPublishersNames(publishers);
         publisherChioceBox.setItems(FXCollections.observableArrayList(publishersNames));
+
+        setTitleRow();
+    }
+
+    private void setTitleRow() {
+        resultsVBox.getChildren().clear();
         HBox hBox = new HBox();
         hBox.setPrefHeight(25);
         Label isbnLabel = new Label("ISBN");

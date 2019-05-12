@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class AddBook implements Initializable {
 
+    public Label titleLabel;
+    public Button submitBtn;
     @FXML
     private DatePicker publicationDatePicker;
     @FXML
@@ -57,6 +59,31 @@ public class AddBook implements Initializable {
         List<Publisher> publishers = databaseHandler.getPublishers();
         ArrayList<String> publishersNames = getPublishersNames(publishers);
         publisherChoiceBox.setItems(FXCollections.observableArrayList(publishersNames));
+        if(chosenBook != null) { // Edit book
+            titleLabel.setText("Edit Book");
+            isbnTxtField.setText(chosenBook.getIsbn());
+            titleTxtField.setText(chosenBook.getTitle());
+            authorsVBox.setDisable(true);
+            publisherChoiceBox.setValue(chosenBook.getPublisherName());
+            publicationDatePicker.setValue(chosenBook.getPublicationDate().toLocalDate());
+            priceTxtField.setText(String.valueOf(chosenBook.getPrice()));
+            categoryChoiceBox.setValue(chosenBook.getCategoryName());
+            quantityTxtField.setText(String.valueOf(chosenBook.getQuantity()));
+            minQuantityTxtField.setText(String.valueOf(chosenBook.getRequiredQuantity()));
+            defOrderQuantityTxtField.setText(String.valueOf(chosenBook.getThreshold()));
+            submitBtn.setText("Save");
+        } else { // Add book
+            titleLabel.setText("Add Book");
+            isbnTxtField.setText("");
+            titleTxtField.setText("");
+            publisherChoiceBox.setValue("");
+            priceTxtField.setText("");
+            categoryChoiceBox.setValue("");
+            quantityTxtField.setText("");
+            minQuantityTxtField.setText("");
+            defOrderQuantityTxtField.setText("");
+            submitBtn.setText("Submit");
+        }
     }
 
     private ArrayList<String> getPublishersNames(List<Publisher> publishers) {
