@@ -4,6 +4,10 @@ create schema if not exists bookstore;
 
 use bookstore;
 
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE TABLE publisher;
+
 create table if not exists publisher
 (
     publisher_name varchar(45) primary key not null
@@ -233,4 +237,8 @@ insert into category (category_name)
 values ('Geography');
 
 insert into user
-values ('Khaled', 'k@k.com', '0000', '01201244416', 'Khaled', 'Abd', 'bla', 1);
+values ('manager', 'k@h.com', '0000', '01201244416', 'Khaled', 'Abd', 'bla', 1);
+
+CALL get_total_sales();
+CALL get_top_users();
+CALL get_top_books();

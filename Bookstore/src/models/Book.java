@@ -14,7 +14,7 @@ public class Book {
     @Column(name = "ISBN")
     private String isbn;
     private String title;
-    private long price;
+    private float price;
     @Column(name = "publication_date")
     private java.sql.Date publicationDate;
     private long quantity;
@@ -52,11 +52,11 @@ public class Book {
     }
 
 
-    public long getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(long price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

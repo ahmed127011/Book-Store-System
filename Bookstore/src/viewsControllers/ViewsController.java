@@ -88,34 +88,34 @@ public class ViewsController {
     }
 
     private ViewsController() throws IOException {
-        File loginScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/login.fxml");
+        File loginScreenFile = new File("src/views/login.fxml");
         loginScreenUrl = loginScreenFile.toURI().toURL();
 
-        File signUpScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/signUp.fxml");
+        File signUpScreenFile = new File("src/views/signUp.fxml");
         signUpScreenUrl = signUpScreenFile.toURI().toURL();
 
-        File controlPanelScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/controlPanel.fxml");
+        File controlPanelScreenFile = new File("src/views/controlPanel.fxml");
         controlPanelScreenUrl = controlPanelScreenFile.toURI().toURL();
 
-        File addBookScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/addBook.fxml");
+        File addBookScreenFile = new File("src/views/addBook.fxml");
         addBookPanelScreenUrl = addBookScreenFile.toURI().toURL();
 
-        File addPublisherScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/addPublisher.fxml");
+        File addPublisherScreenFile = new File("src/views/addPublisher.fxml");
         addPublisherScreenUrl = addPublisherScreenFile.toURI().toURL();
 
-        File searchForBooksScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/searchForBooks.fxml");
+        File searchForBooksScreenFile = new File("src/views/searchForBooks.fxml");
         searchForBooksScreenUrl = searchForBooksScreenFile.toURI().toURL();
 
-        File checkOutScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/checkOut.fxml");
+        File checkOutScreenFile = new File("src/views/checkOut.fxml");
         checOutScreenUrl = checkOutScreenFile.toURI().toURL();
 
-        File userHomeScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/userHome.fxml");
+        File userHomeScreenFile = new File("src/views/userHome.fxml");
         userHomeScreenUrl = userHomeScreenFile.toURI().toURL();
 
-        File confirmOrdersScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/confirmOrders.fxml");
+        File confirmOrdersScreenFile = new File("src/views/confirmOrders.fxml");
         confirmOrdersScreenUrl = confirmOrdersScreenFile.toURI().toURL();
 
-        File shoppingCartScreenFile = new File("/home/ayman/Projects/University/Book_Store_System/Bookstore/src/views/shoppingCart.fxml");
+        File shoppingCartScreenFile = new File("src/views/shoppingCart.fxml");
         shoppingCartScreenUrl = shoppingCartScreenFile.toURI().toURL();
     }
 

@@ -74,9 +74,9 @@ public class SearchForBooks implements Initializable {
         if(!publisherChioceBox.isDisabled())
             bookDAO.setPublisher(publisherChioceBox.getValue().toString());
         if(!minPriceTxtField.isDisabled())
-            bookDAO.setLowerPrice(Long.valueOf(minPriceTxtField.getText()));
+            bookDAO.setLowerPrice(Float.parseFloat(minPriceTxtField.getText()));
         if(!maxPriceTxtField.isDisabled())
-            bookDAO.setLowerPrice(Long.valueOf(maxPriceTxtField.getText()));
+            bookDAO.setLowerPrice(Float.parseFloat(maxPriceTxtField.getText()));
         bookDAO.setCategories(getChosenCategories());
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         List<Book> books = databaseHandler.findBook(bookDAO);

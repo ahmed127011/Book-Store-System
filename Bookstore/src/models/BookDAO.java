@@ -5,8 +5,8 @@ import java.util.List;
 public class BookDAO {
     private String isbn;
     private String title;
-    private long lowerPrice;
-    private long upperPrice;
+    private float lowerPrice;
+    private float upperPrice;
     private String author;
     private String publisher;
     private List<String> categories;
@@ -54,19 +54,19 @@ public class BookDAO {
         return title;
     }
 
-    public void setLowerPrice(long lowerPrice) {
+    public void setLowerPrice(float lowerPrice) {
         this.lowerPrice = lowerPrice;
     }
 
-    public long getLowerPrice() {
+    public float getLowerPrice() {
         return lowerPrice;
     }
 
-    public void setUpperPrice(long upperPrice) {
+    public void setUpperPrice(float upperPrice) {
         this.upperPrice = upperPrice;
     }
 
-    public long getUpperPrice() {
+    public float getUpperPrice() {
         return upperPrice;
     }
 }

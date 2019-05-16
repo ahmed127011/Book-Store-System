@@ -113,13 +113,13 @@ public class AddBook implements Initializable {
         DatabaseHandler databaseHandler = MysqlDatabaseHandler.getInstance();
         if(chosenBook == null) { // Add book
             Book newBook = new Book(isbn, title);
-            newBook.setPrice(Long.valueOf(price));
+            newBook.setPrice(Float.parseFloat(price));
             newBook.setPublisherName(publisherName);
             newBook.setCategoryName(categoryName);
             newBook.setPublicationDate(publicationDate);
             newBook.setQuantity(quantity);
-            newBook.setThreshold(orderQuantity);
-            newBook.setRequiredQuantity(minQuantity);
+            newBook.setThreshold(minQuantity);
+            newBook.setRequiredQuantity(orderQuantity);
             Boolean added = databaseHandler.addNewBook(newBook);
             for (Node children: authorsVBox.getChildren()) {
                 String authorName = ((TextField)(((HBox)children).getChildren().get(0))).getText();
@@ -142,13 +142,13 @@ public class AddBook implements Initializable {
             }
         } else { // Edit Book
             chosenBook.setTitle(title);
-            chosenBook.setPrice(Long.valueOf(price));
+            chosenBook.setPrice(Float.parseFloat(price));
             chosenBook.setPublisherName(publisherName);
             chosenBook.setCategoryName(categoryName);
             chosenBook.setPublicationDate(publicationDate);
             chosenBook.setQuantity(quantity);
-            chosenBook.setThreshold(orderQuantity);
-            chosenBook.setRequiredQuantity(minQuantity);
+            chosenBook.setThreshold(minQuantity);
+            chosenBook.setRequiredQuantity(orderQuantity);
             Boolean edited = databaseHandler.updateBookData(chosenBook);
             if(edited) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Successfully Edited The Book");
